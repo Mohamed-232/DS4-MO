@@ -64,9 +64,9 @@ namespace CustomMacroPlugin0.GameList
         Orbit,
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // FOV OVERLAY WINDOW
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class FovOverlayWindow : Window
     {
@@ -135,9 +135,9 @@ namespace CustomMacroPlugin0.GameList
         }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // SMOOTHING ENGINE
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class SmoothingEngine
     {
@@ -169,9 +169,9 @@ namespace CustomMacroPlugin0.GameList
         public void Reset() { _sx = _sy = _vx = _vy = 0; }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // ACTIVATION ENGINE
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class ActivationEngine
     {
@@ -229,9 +229,9 @@ namespace CustomMacroPlugin0.GameList
         }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // RECOIL ENGINE v2
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class RecoilEngine
     {
@@ -360,9 +360,9 @@ namespace CustomMacroPlugin0.GameList
         }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // HAIR TRIGGER ENGINE v2
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class HairTriggerEngine
     {
@@ -385,9 +385,9 @@ namespace CustomMacroPlugin0.GameList
         }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // RAPID SPAM ENGINE
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class RapidSpamEngine
     {
@@ -424,9 +424,9 @@ namespace CustomMacroPlugin0.GameList
         public void Reset() { _pressing = false; _phaseStart = 0; }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // AIM STABILIZER ENGINE
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class AimStabilizerEngine
     {
@@ -491,9 +491,9 @@ namespace CustomMacroPlugin0.GameList
         public void Reset() { _tick = 0; _driftX = _driftY = 0; }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // SCREEN SCANNER
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class ScreenScanner : IDisposable
     {
@@ -535,88 +535,102 @@ namespace CustomMacroPlugin0.GameList
         }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════════════════════════════
-    // [ULTIMATE HARD-LOCK ENGINE v10.0 - PRODUCTION GRADE]
-    // 
-    // LETHAL. PRECISE. UNSTOPPABLE.
-    // 
-    // This engine is engineered for COMPETITIVE ESPORTS.
-    // Every microsecond matters. Every pixel counts.
-    //
-    // Replaces ColorAimEngine with hard-lock state machine, predictive aiming, and machine learning tracking.
-    // ════════════════════════════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
+    // COLOR AIM ENGINE  v6
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class ColorAimEngine : IDisposable
     {
-        // STATE MACHINE (4-State, Bulletproof)
-        private enum LockState { Unlocked, Acquiring, Locked, Coasting }
-        private LockState _state = LockState.Unlocked;
-        private long _stateEnteredTick = Environment.TickCount64;
-        private int _framesSinceStateChange = 0;
-
-        // LOCK POSITION (Multi-Tracked for Prediction)
-        private double _lockedX = 0, _lockedY = 0;
-        private double _prevLockedX = 0, _prevLockedY = 0;
-        private double _velocityX = 0, _velocityY = 0;
-        private double _smoothedX = 0, _smoothedY = 0;
-        private double _lockedHue = 0;
-        private double _lockedSaturation = 0.5;
-        private double _lockedValue = 0.5;
-
-        // ADAPTIVE NEURAL TRACKING
-        private double _adaptiveAlpha = 0.85;
-        private double _adaptiveJitter = 0.0;
-        private int _successfulFrames = 0;
-        private int _failedFrames = 0;
-        private double _confidence = 0.0;
-
-        // SCREEN SCANNER
-        private readonly ScreenScanner _scanner = new ScreenScanner();
-        private (short dx, short dy)[] _spiral;
-        private int _spiralLen = 0;
-        private int _cachedRadius = -1;
-
-        // PERFORMANCE TELEMETRY
-        private int _tickCount = 0;
-        private long _lastProfileTick = Environment.TickCount64;
-        private double _avgScanMs = 0;
-        private int _detectedPixelsAvg = 0;
-        private double _frameRateDetected = 60.0;
-        private long _lastFrameTick = Environment.TickCount64;
-
-        // PUBLIC CONFIGURATION
         public ColorAimActivation Activation { get; set; } = ColorAimActivation.ADSOnly;
+        public ColorAimPreset Preset { get; set; } = ColorAimPreset.HexInput;
         public int HexTargetR { get; set; } = 255;
         public int HexTargetG { get; set; } = 0;
         public int HexTargetB { get; set; } = 255;
-
-        public double LockStrength { get; set; } = 100.0;           // DEFAULT 100 (lethal)
-        public double LockSpeed { get; set; } = 90.0;               // Alias for AcquisitionSpeed
-        public int DetectionQuality { get; set; } = 4;              // DEFAULT 4 (precise)
-        public int CoastFrames { get; set; } = 6;                   // Ignored (uses LockRetentionMs)
-        public double HueTolerance { get; set; } = 0.0;             // Auto-compute from quality
-        public double HueTightened { get; set; } = 0.35;            // Locked tolerance multiplier
-        public double DeadZonePx { get; set; } = 1.5;               // DEFAULT 1.5px
-        public double AnchorUpdateSpeed { get; set; } = 0.85;       // Tracking responsiveness
+        public double LockStrength { get; set; } = 38.0;
+        public double LockSpeed { get; set; } = 75.0;
+        public int DetectionQuality { get; set; } = 3;
+        public int CoastFrames { get; set; } = 6;
+        public double HueTolerance { get; set; } = 0.0;
+        public double HueTightened { get; set; } = 0.0;
+        public double DeadZonePx { get; set; } = 4.0;
+        public double AnchorUpdateSpeed { get; set; } = 0.12;
         public double VertBiasTopFraction { get; set; } = 0.45;
         public double HorizClampFactor { get; set; } = 0.55;
         public double CentroidBlend { get; set; } = 0.80;
 
-        // NEW PROPERTIES
-        public double LockRetentionMs { get; set; } = 150.0;
-        public double PredictionStrength { get; set; } = 0.4;
-        public double QuantumJitterAmount { get; set; } = 0.8;
-        public bool EnableNeuralAdaptation { get; set; } = true;
-        public bool EnableRecoilCompensation { get; set; } = true;
+        private double _anchorX, _anchorY;
+        private bool _hasAnchor;
+        private int _coastRemaining;
+        private bool _hardLocked;
+        private double _lockedHue;
+        private int _lockFrames;
+        private const int LockConfirmFrames = 2;
+        private int _lostFrames;
 
-        // MAIN TICK FUNCTION
+        private (short dx, short dy)[] _spiral;
+        private int _spiralLen;
+        private int _cachedRadius = -1;
+        private readonly ScreenScanner _scanner = new ScreenScanner();
+
+        private static void GetPresetColor(ColorAimPreset p, out int r, out int g, out int b)
+        {
+            switch (p)
+            {
+                case ColorAimPreset.Red: r = 255; g = 0; b = 0; break;
+                case ColorAimPreset.Pink: r = 255; g = 0; b = 255; break;
+                case ColorAimPreset.White: r = 255; g = 255; b = 255; break;
+                case ColorAimPreset.Yellow: r = 255; g = 255; b = 0; break;
+                case ColorAimPreset.Cyan: r = 0; g = 255; b = 255; break;
+                case ColorAimPreset.Orange: r = 255; g = 102; b = 0; break;
+                case ColorAimPreset.Purple: r = 170; g = 0; b = 255; break;
+                case ColorAimPreset.Green: r = 0; g = 255; b = 0; break;
+                case ColorAimPreset.Black: r = 0; g = 0; b = 0; break;
+                case ColorAimPreset.HeroRivals: r = 255; g = 60; b = 60; break;
+                case ColorAimPreset.Fortnite: r = 255; g = 100; b = 0; break;
+                case ColorAimPreset.Apex: r = 255; g = 70; b = 70; break;
+                case ColorAimPreset.Warzone: r = 255; g = 80; b = 80; break;
+                case ColorAimPreset.COD: r = 255; g = 0; b = 0; break;
+                default: r = -1; g = -1; b = -1; break;
+            }
+        }
+
+        private static void RgbToHsv(int r, int g, int b,
+                                      out double h, out double s, out double v)
+        {
+            double rf = r / 255.0, gf = g / 255.0, bf = b / 255.0;
+            double max = Math.Max(rf, Math.Max(gf, bf));
+            double min = Math.Min(rf, Math.Min(gf, bf));
+            double d = max - min;
+            v = max; s = max < 1e-6 ? 0.0 : d / max;
+            if (d < 1e-6) { h = 0; return; }
+            if (max == rf) h = 60.0 * (((gf - bf) / d) % 6.0);
+            else if (max == gf) h = 60.0 * (((bf - rf) / d) + 2.0);
+            else h = 60.0 * (((rf - gf) / d) + 4.0);
+            if (h < 0) h += 360.0;
+        }
+
+        private static double HueDiff(double a, double b)
+        { double d = Math.Abs(a - b) % 360.0; return d > 180.0 ? 360.0 - d : d; }
+
+        private static void QualityToThresholds(int q,
+            out double hueTol, out double hueTight,
+            out double satMin, out double valMin,
+            out int minPixels, out bool edgeFilter)
+        {
+            q = Math.Clamp(q, 1, 5);
+            hueTol = new[] { 35.0, 28.0, 20.0, 14.0, 9.0 }[q - 1];
+            hueTight = hueTol * 0.55;
+            satMin = new[] { 0.45, 0.55, 0.65, 0.72, 0.80 }[q - 1];
+            valMin = new[] { 0.30, 0.40, 0.50, 0.55, 0.60 }[q - 1];
+            minPixels = new[] { 2, 3, 4, 5, 7 }[q - 1];
+            edgeFilter = q >= 3;
+        }
+
         public unsafe bool Tick(
             bool ads, bool fire, int radius,
             int customR, int customG, int customB,
             ref byte virtRX, ref byte virtRY)
         {
-            long tickStartMs = Environment.TickCount64;
-
             bool gate = Activation switch
             {
                 ColorAimActivation.ADSOnly => ads,
@@ -625,417 +639,214 @@ namespace CustomMacroPlugin0.GameList
                 ColorAimActivation.Always => true,
                 _ => false
             };
-
             if (!gate)
             {
-                ResetAllState();
+                _anchorX = _anchorY = 0;
+                _hasAnchor = false; _coastRemaining = 0;
+                _hardLocked = false; _lockFrames = 0; _lostFrames = 0;
                 return false;
             }
 
-            UpdateFrameRateEstimate();
-            var scr = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            int screenCenterX = scr.Width >> 1;
-            int screenCenterY = scr.Height >> 1;
-            int diameter = radius * 2;
+            int tR, tG, tB;
+            if (Preset == ColorAimPreset.HexInput)
+            { tR = HexTargetR; tG = HexTargetG; tB = HexTargetB; }
+            else if (Preset == ColorAimPreset.Custom)
+            { tR = customR; tG = customG; tB = customB; }
+            else
+            {
+                GetPresetColor(Preset, out tR, out tG, out tB);
+                if (tR < 0) { tR = customR; tG = customG; tB = customB; }
+            }
+            RgbToHsv(tR, tG, tB, out double targetH, out _, out _);
 
-            _scanner.EnsureSize(diameter);
-            _scanner.Capture(screenCenterX, screenCenterY);
+            QualityToThresholds(DetectionQuality,
+                out double autoHueTol, out double autoHueTight,
+                out double satMin, out double valMin,
+                out int minPixels, out bool edgeFilter);
+
+            double hueTol = (HueTolerance > 0.5) ? HueTolerance : autoHueTol;
+            double activeTol = _hardLocked ? autoHueTight : hueTol;
+            double activeHue = _hardLocked ? _lockedHue : targetH;
 
             RebuildSpiralIfNeeded(radius);
+            var scr = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            int scx = scr.Width >> 1;
+            int scy = scr.Height >> 1;
+            int diam = radius * 2;
+            _scanner.EnsureSize(diam);
+            _scanner.Capture(scx, scy);
 
-            int detectedPixels = 0;
-            double sumX = 0, sumY = 0;
-            double targetHue = GetTargetHue(customR, customG, customB);
-            double hueTolerance = GetHueTolerance(targetHue);
+            int hitCount = 0;
+            int bbMinX = diam, bbMaxX = 0;
+            int bbMinY = diam, bbMaxY = 0;
 
             var bmd = _scanner.Lock(out byte* basePtr, out int stride);
             try
             {
+                int len = _spiralLen;
+                for (int i = 0; i < len; i++)
+                {
+                    short sdx = _spiral[i].dx, sdy = _spiral[i].dy;
+                    int px = radius + sdx, py = radius + sdy;
+                    byte* p = basePtr + py * stride + (px << 2);
+
+                    RgbToHsv(p[2], p[1], p[0], out double pH, out double pS, out double pV);
+                    if (HueDiff(pH, activeHue) > activeTol) continue;
+                    if (pS < satMin || pV < valMin) continue;
+
+                    if (edgeFilter && px > 0 && px < diam - 1 && py > 0 && py < diam - 1)
+                    {
+                        bool nM = NeighbourMatch(basePtr, stride, px, py - 1, activeHue, activeTol, satMin, valMin);
+                        bool sM = NeighbourMatch(basePtr, stride, px, py + 1, activeHue, activeTol, satMin, valMin);
+                        bool wM = NeighbourMatch(basePtr, stride, px - 1, py, activeHue, activeTol, satMin, valMin);
+                        bool eM = NeighbourMatch(basePtr, stride, px + 1, py, activeHue, activeTol, satMin, valMin);
+                        if (nM && sM && wM && eM) continue;
+                    }
+
+                    hitCount++;
+                    if (px < bbMinX) bbMinX = px;
+                    if (px > bbMaxX) bbMaxX = px;
+                    if (py < bbMinY) bbMinY = py;
+                    if (py > bbMaxY) bbMaxY = py;
+                }
+
+                if (hitCount < minPixels || bbMaxX < bbMinX || bbMaxY < bbMinY)
+                { _scanner.Unlock(bmd); goto HandleNotDetected; }
+
+                double bbCX = (bbMinX + bbMaxX) * 0.5;
+                double bbHalfW = (bbMaxX - bbMinX) * 0.5;
+                double bbH = bbMaxY - bbMinY;
+                double horizClampPx = bbHalfW * HorizClampFactor;
+                double vertBiasThresholdY = bbMinY + bbH * VertBiasTopFraction;
+
+                double wSumX = 0, wSumY = 0, wTotal = 0;
+
                 for (int i = 0; i < _spiralLen; i++)
                 {
-                    if (detectedPixels >= 120) break;  // Early exit
+                    short sdx = _spiral[i].dx, sdy = _spiral[i].dy;
+                    int px = radius + sdx, py = radius + sdy;
+                    byte* p = basePtr + py * stride + (px << 2);
 
-                    short sdx = _spiral[i].dx;
-                    short sdy = _spiral[i].dy;
-                    int px = radius + sdx;
-                    int py = radius + sdy;
+                    RgbToHsv(p[2], p[1], p[0], out double pH, out double pS, out double pV);
+                    if (HueDiff(pH, activeHue) > activeTol) continue;
+                    if (pS < satMin || pV < valMin) continue;
+                    if (Math.Abs(px - bbCX) > horizClampPx) continue;
 
-                    byte* pixelPtr = basePtr + (py * stride) + (px << 2);
-                    byte r = pixelPtr[2];
-                    byte g = pixelPtr[1];
-                    byte b = pixelPtr[0];
-
-                    RgbToHsv(r, g, b, out double h, out double s, out double v);
-                    GetQualityThresholds(DetectionQuality, out double satMin, out double valMin);
-
-                    double hDiff = HueDifference(h, targetHue);
-                    double effectiveTol = hueTolerance * 
-                        (_state == LockState.Locked ? HueTightened : 1.0);
-
-                    if (hDiff <= effectiveTol && s >= satMin && v >= valMin)
-                    {
-                        sumX += px;
-                        sumY += py;
-                        detectedPixels++;
-                    }
+                    double vertW = (py <= vertBiasThresholdY) ? 3.0 : 1.0;
+                    double hd = HueDiff(pH, activeHue);
+                    double hueW = 1.0 - (hd / Math.Max(activeTol, 1.0));
+                    double w = vertW * hueW;
+                    wSumX += px * w;
+                    wSumY += py * w;
+                    wTotal += w;
                 }
 
                 _scanner.Unlock(bmd);
-            }
-            catch { _scanner.Unlock(bmd); throw; }
+                bmd = null;
 
-            _detectedPixelsAvg = (int)(0.7 * _detectedPixelsAvg + 0.3 * detectedPixels);
+                double targetX, targetY;
+                if (wTotal > 0)
+                {
+                    double wCX = wSumX / wTotal;
+                    double wCY = wSumY / wTotal;
+                    targetX = CentroidBlend * (wCX - radius) + (1.0 - CentroidBlend) * (bbCX - radius);
+                    targetY = CentroidBlend * (wCY - radius) + (1.0 - CentroidBlend) * ((bbMinY + bbMaxY) * 0.5 - radius);
+                }
+                else
+                {
+                    targetX = bbCX - radius;
+                    targetY = (bbMinY + bbMaxY) * 0.5 - radius;
+                }
 
-            if (detectedPixels >= 3)
-            {
-                double detectedX = (sumX / detectedPixels) - radius;
-                double detectedY = (sumY / detectedPixels) - radius;
-                UpdateStateMachine_TargetFound(detectedX, detectedY, targetHue);
+                if (!_hasAnchor)
+                { _anchorX = targetX; _anchorY = targetY; _hasAnchor = true; }
+                else
+                {
+                    double a = Math.Clamp(AnchorUpdateSpeed, 0.02, 1.0);
+                    _anchorX = a * targetX + (1.0 - a) * _anchorX;
+                    _anchorY = a * targetY + (1.0 - a) * _anchorY;
+                }
+
+                _coastRemaining = CoastFrames;
+                _lostFrames = 0;
+
+                if (!_hardLocked)
+                {
+                    _lockFrames++;
+                    if (_lockFrames >= LockConfirmFrames)
+                    { _lockedHue = activeHue; _hardLocked = true; }
+                }
+
+                goto ApplyOutput;
             }
+            finally { if (bmd != null) _scanner.Unlock(bmd); }
+
+        HandleNotDetected:
+            _lostFrames++;
+            if (_lostFrames <= CoastFrames && _hasAnchor) { /* coast */ }
             else
             {
-                UpdateStateMachine_TargetLost();
+                _hasAnchor = false; _hardLocked = false;
+                _lockFrames = 0; _lostFrames = 0; _anchorX = _anchorY = 0;
+                return false;
             }
 
-            if (_state == LockState.Locked || _state == LockState.Coasting)
-            {
-                ApplyLockAim(ref virtRX, ref virtRY);
-                _successfulFrames++;
-            }
-            else
-            {
-                _failedFrames++;
-            }
+        ApplyOutput:
+            if (!_hasAnchor) return false;
 
-            if (EnableNeuralAdaptation)
-            {
-                AdaptTracking();
-            }
+            double dist = Math.Sqrt(_anchorX * _anchorX + _anchorY * _anchorY);
+            if (dist < DeadZonePx) return true;
 
-            long tickEndMs = Environment.TickCount64;
-            double elapsedMs = tickEndMs - tickStartMs;
-            _avgScanMs = 0.85 * _avgScanMs + 0.15 * elapsedMs;
-            _tickCount++;
-
-            return (_state == LockState.Locked || _state == LockState.Coasting);
-        }
-
-        // STATE MACHINE TRANSITIONS
-        private void UpdateStateMachine_TargetFound(double detectedX, double detectedY, double detectedHue)
-        {
-            long now = Environment.TickCount64;
-            _framesSinceStateChange++;
-
-            switch (_state)
-            {
-                case LockState.Unlocked:
-                    _state = LockState.Acquiring;
-                    _framesSinceStateChange = 0;
-                    _stateEnteredTick = now;
-                    _lockedX = detectedX;
-                    _lockedY = detectedY;
-                    _lockedHue = detectedHue;
-                    _confidence = 0.3;
-                    break;
-
-                case LockState.Acquiring:
-                    double delta = Math.Sqrt(
-                        Math.Pow(detectedX - _lockedX, 2) + 
-                        Math.Pow(detectedY - _lockedY, 2));
-
-                    if (delta < 3.0 && _framesSinceStateChange >= 2)
-                    {
-                        _state = LockState.Locked;
-                        _lockedHue = detectedHue;
-                        _lockedX = detectedX;
-                        _lockedY = detectedY;
-                        _smoothedX = detectedX;
-                        _smoothedY = detectedY;
-                        _prevLockedX = detectedX;
-                        _prevLockedY = detectedY;
-                        _velocityX = 0;
-                        _velocityY = 0;
-                        _framesSinceStateChange = 0;
-                        _stateEnteredTick = now;
-                        _confidence = 0.95;
-                    }
-                    else
-                    {
-                        double alpha = 0.6;
-                        _lockedX = alpha * detectedX + (1.0 - alpha) * _lockedX;
-                        _lockedY = alpha * detectedY + (1.0 - alpha) * _lockedY;
-                        _confidence = 0.5 + (_framesSinceStateChange * 0.1);
-
-                        if ((now - _stateEnteredTick) > 300)
-                        {
-                            _state = LockState.Unlocked;
-                            _framesSinceStateChange = 0;
-                            _confidence = 0.0;
-                        }
-                    }
-                    break;
-
-                case LockState.Locked:
-                    _prevLockedX = _lockedX;
-                    _prevLockedY = _lockedY;
-
-                    double trackAlpha = GetAdaptiveAlpha();
-                    _lockedX = trackAlpha * detectedX + (1.0 - trackAlpha) * _lockedX;
-                    _lockedY = trackAlpha * detectedY + (1.0 - trackAlpha) * _lockedY;
-
-                    _velocityX = 0.7 * _velocityX + 0.3 * (_lockedX - _prevLockedX);
-                    _velocityY = 0.7 * _velocityY + 0.3 * (_lockedY - _prevLockedY);
-
-                    _framesSinceStateChange = 0;
-                    _stateEnteredTick = now;
-                    _confidence = Math.Min(_confidence + 0.02, 1.0);
-                    break;
-
-                case LockState.Coasting:
-                    _state = LockState.Locked;
-                    _lockedX = detectedX;
-                    _lockedY = detectedY;
-                    _framesSinceStateChange = 0;
-                    _stateEnteredTick = now;
-                    _confidence = 0.85;
-                    break;
-            }
-        }
-
-        private void UpdateStateMachine_TargetLost()
-        {
-            long now = Environment.TickCount64;
-
-            switch (_state)
-            {
-                case LockState.Acquiring:
-                    _state = LockState.Unlocked;
-                    _framesSinceStateChange = 0;
-                    _confidence = 0.0;
-                    break;
-
-                case LockState.Locked:
-                    _state = LockState.Coasting;
-                    _stateEnteredTick = now;
-                    _framesSinceStateChange = 0;
-                    _confidence = Math.Max(_confidence - 0.15, 0.3);
-                    break;
-
-                case LockState.Coasting:
-                    if ((now - _stateEnteredTick) > (long)LockRetentionMs)
-                    {
-                        _state = LockState.Unlocked;
-                        _framesSinceStateChange = 0;
-                        _confidence = 0.0;
-                    }
-                    break;
-
-                case LockState.Unlocked:
-                    break;
-            }
-        }
-
-        // AIM APPLICATION (Prediction + Anti-Cheat)
-        private void ApplyLockAim(ref byte virtRX, ref byte virtRY)
-        {
-            double aimX = _lockedX + (_velocityX * PredictionStrength);
-            double aimY = _lockedY + (_velocityY * PredictionStrength);
-
-            if (QuantumJitterAmount > 0)
-            {
-                aimX += (Math.Sin(_tickCount * 0.47) * QuantumJitterAmount * 0.3);
-                aimY += (Math.Cos(_tickCount * 0.63) * QuantumJitterAmount * 0.3);
-            }
-
-            double dist = Math.Sqrt(aimX * aimX + aimY * aimY);
-
-            if (dist < DeadZonePx) return;
-
-            double ux = aimX / dist;
-            double uy = aimY / dist;
+            double ux = _anchorX / dist;
+            double uy = _anchorY / dist;
             double lockMag = (LockStrength / 100.0) * 127.0;
 
-            int deltaX = (int)Math.Round(ux * lockMag);
-            int deltaY = (int)Math.Round(uy * lockMag);
+            int dX = (int)Math.Round(ux * lockMag);
+            int dY = (int)Math.Round(uy * lockMag);
 
-            virtRX = (byte)Math.Clamp(virtRX + deltaX, 0, 255);
-            virtRY = (byte)Math.Clamp(virtRY + deltaY, 0, 255);
+            virtRX = (byte)Math.Clamp(virtRX + dX, 0, 255);
+            virtRY = (byte)Math.Clamp(virtRY + dY, 0, 255);
+
+            return true;
         }
 
-        // NEURAL ADAPTATION
-        private void AdaptTracking()
+        private static unsafe bool NeighbourMatch(
+            byte* basePtr, int stride, int px, int py,
+            double targetH, double hueTol, double satMin, double valMin)
         {
-            if (_successfulFrames + _failedFrames > 30)
-            {
-                double successRate = _successfulFrames / (double)(_successfulFrames + _failedFrames);
-                _adaptiveAlpha = 0.65 + (successRate * 0.2);
-
-                _successfulFrames = 0;
-                _failedFrames = 0;
-            }
-
-            _adaptiveJitter = (1.0 - _confidence) * QuantumJitterAmount;
+            byte* p = basePtr + py * stride + (px << 2);
+            RgbToHsv(p[2], p[1], p[0], out double h, out double s, out double v);
+            return HueDiff(h, targetH) <= hueTol && s >= satMin && v >= valMin;
         }
 
-        private double GetAdaptiveAlpha()
-        {
-            return EnableNeuralAdaptation ? _adaptiveAlpha : (AnchorUpdateSpeed);
-        }
-
-        // FRAME RATE DETECTION
-        private void UpdateFrameRateEstimate()
-        {
-            long now = Environment.TickCount64;
-            double elapsedMs = now - _lastFrameTick;
-
-            if (elapsedMs > 0)
-            {
-                double frameTimeMs = elapsedMs / 1.0;
-                double detectedHz = 1000.0 / frameTimeMs;
-                _frameRateDetected = 0.8 * _frameRateDetected + 0.2 * detectedHz;
-            }
-
-            _lastFrameTick = now;
-        }
-
-        // COLOR MATCHING UTILITIES
-        private void RgbToHsv(int r, int g, int b, out double h, out double s, out double v)
-        {
-            double rf = r / 255.0;
-            double gf = g / 255.0;
-            double bf = b / 255.0;
-
-            double max = Math.Max(rf, Math.Max(gf, bf));
-            double min = Math.Min(rf, Math.Min(gf, bf));
-            double delta = max - min;
-
-            v = max;
-            s = max < 1e-6 ? 0.0 : delta / max;
-
-            if (delta < 1e-6)
-            {
-                h = 0;
-            }
-            else if (max == rf)
-            {
-                h = 60.0 * (((gf - bf) / delta) % 6.0);
-            }
-            else if (max == gf)
-            {
-                h = 60.0 * (((bf - rf) / delta) + 2.0);
-            }
-            else
-            {
-                h = 60.0 * (((rf - gf) / delta) + 4.0);
-            }
-
-            if (h < 0) h += 360.0;
-        }
-
-        private double HueDifference(double a, double b)
-        {
-            double diff = Math.Abs(a - b) % 360.0;
-            return diff > 180.0 ? 360.0 - diff : diff;
-        }
-
-        private double GetTargetHue(int r, int g, int b)
-        {
-            RgbToHsv(r, g, b, out double h, out _, out _);
-            return h;
-        }
-
-        private double GetHueTolerance(double hue)
-        {
-            return DetectionQuality switch
-            {
-                1 => 50.0,
-                2 => 40.0,
-                3 => 28.0,
-                4 => 18.0,
-                5 => 10.0,
-                _ => 20.0
-            };
-        }
-
-        private void GetQualityThresholds(int quality, out double satMin, out double valMin)
-        {
-            switch (quality)
-            {
-                case 1: satMin = 0.30; valMin = 0.20; break;
-                case 2: satMin = 0.40; valMin = 0.30; break;
-                case 3: satMin = 0.50; valMin = 0.40; break;
-                case 4: satMin = 0.60; valMin = 0.50; break;
-                case 5: satMin = 0.70; valMin = 0.60; break;
-                default: satMin = 0.50; valMin = 0.40; break;
-            }
-        }
-
-        // SPIRAL CACHING
         private void RebuildSpiralIfNeeded(int radius)
         {
             if (radius == _cachedRadius) return;
-
             _cachedRadius = radius;
             int r2 = radius * radius;
-            int capacity = radius * 2 * radius * 2;
-            var temp = new (int dist2, short dx, short dy)[capacity];
-            int count = 0;
-
+            int cap = radius * 2 * radius * 2;
+            var tmp = new (int d2, short dx, short dy)[cap];
+            int cnt = 0;
             for (int dy = -radius + 1; dy < radius; dy++)
-            {
                 for (int dx = -radius + 1; dx < radius; dx++)
                 {
                     int d2 = dx * dx + dy * dy;
                     if (d2 > r2) continue;
-                    temp[count++] = (d2, (short)dx, (short)dy);
+                    tmp[cnt++] = (d2, (short)dx, (short)dy);
                 }
-            }
-
-            Array.Sort(temp, 0, count,
-                System.Collections.Generic.Comparer<(int, short, short)>.Create(
-                    (a, b) => a.Item1.CompareTo(b.Item1)));
-
-            _spiral = new (short, short)[count];
-            _spiralLen = count;
-            for (int i = 0; i < count; i++)
-            {
-                _spiral[i] = (temp[i].dx, temp[i].dy);
-            }
+            Array.Sort(tmp, 0, cnt,
+                Comparer<(int d2, short dx, short dy)>.Create((a, b) => a.d2.CompareTo(b.d2)));
+            _spiral = new (short, short)[cnt];
+            _spiralLen = cnt;
+            for (int i = 0; i < cnt; i++) _spiral[i] = (tmp[i].dx, tmp[i].dy);
         }
 
-        // TELEMETRY
-        public void PrintTelemetry()
-        {
-            if (_tickCount % 60 != 0) return;
-            MacroBase.Print($"[HardLock v10] State={_state} | Confidence={_confidence:P0} | Scan={_avgScanMs:F2}ms | Pixels={_detectedPixelsAvg} | FPS={_frameRateDetected:F1}");
-        }
-
-        // STATE RESET
-        private void ResetAllState()
-        {
-            _state = LockState.Unlocked;
-            _lockedX = 0;
-            _lockedY = 0;
-            _smoothedX = 0;
-            _smoothedY = 0;
-            _velocityX = 0;
-            _velocityY = 0;
-            _framesSinceStateChange = 0;
-            _stateEnteredTick = Environment.TickCount64;
-            _confidence = 0.0;
-            _successfulFrames = 0;
-            _failedFrames = 0;
-        }
-
-        public void Dispose()
-        {
-            _scanner?.Dispose();
-        }
+        public void Dispose() => _scanner.Dispose();
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // PATTERN ENGINE
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal sealed class PatternEngine
     {
@@ -1080,9 +891,11 @@ namespace CustomMacroPlugin0.GameList
         public void Reset() { _tick = 0; _snapProgress = 0; _jitterIdx = 0; }
     }
 
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // ════════════════════════════════════════════════════════════════════════════
     // PLUGIN LICENSE INFO
-    // ════════════════════════════════════════════════════════════════════════════════════
+    // Self-contained — no dependency on LicenseGate project.
+    // Saves its own encrypted key to plugin_lic.dat in the same AppData folder.
+    // ════════════════════════════════════════════════════════════════════════════
 
     internal static class PluginLicenseInfo
     {
@@ -1096,6 +909,7 @@ namespace CustomMacroPlugin0.GameList
         private static readonly System.Net.Http.HttpClient _http
             = new System.Net.Http.HttpClient();
 
+        // ── HWID (mirrors HwidHelper in LicenseGate exactly) ─────────────────
         public static string GetHwid()
         {
             string raw = "";
@@ -1117,6 +931,7 @@ namespace CustomMacroPlugin0.GameList
             }
         }
 
+        // ── AES key derived from HWID (mirrors LicenseCrypto) ────────────────
         private static byte[] MachineAesKey()
         {
             string raw = GetHwid() + "EasyAimAES_v1";
@@ -1124,6 +939,7 @@ namespace CustomMacroPlugin0.GameList
                 return sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(raw));
         }
 
+        // ── Encrypt ───────────────────────────────────────────────────────────
         private static string Encrypt(string plain)
         {
             byte[] key = MachineAesKey();
@@ -1143,6 +959,7 @@ namespace CustomMacroPlugin0.GameList
             }
         }
 
+        // ── Decrypt ───────────────────────────────────────────────────────────
         private static string Decrypt(string base64)
         {
             byte[] key = MachineAesKey();
@@ -1163,6 +980,7 @@ namespace CustomMacroPlugin0.GameList
             }
         }
 
+        // ── Save / Load ───────────────────────────────────────────────────────
         public static void SaveKey(string key)
         {
             try
@@ -1184,6 +1002,7 @@ namespace CustomMacroPlugin0.GameList
             catch { return ""; }
         }
 
+        // ── Mask key for display  e.g.  ABCD****WXYZ ─────────────────────────
         public static string MaskKey(string key)
         {
             if (string.IsNullOrEmpty(key)) return "";
@@ -1191,6 +1010,7 @@ namespace CustomMacroPlugin0.GameList
             return key.Substring(0, 4) + "****" + key.Substring(key.Length - 4);
         }
 
+        // ── Query Supabase — returns ready-to-print status string ─────────────
         public static async System.Threading.Tasks.Task<string> QueryStatusAsync(string licenseKey)
         {
             licenseKey = (licenseKey ?? "").Trim().ToUpperInvariant();
@@ -1219,6 +1039,7 @@ namespace CustomMacroPlugin0.GameList
                     if (!json.Contains("\"is_active\":true"))
                         return "[License] ✖  License is DISABLED. Contact support.";
 
+                    // ── Parse expires_at ──────────────────────────────────────
                     if (json.Contains("\"expires_at\":\""))
                     {
                         int si = json.IndexOf("\"expires_at\":\"") + 14;
@@ -1237,20 +1058,1844 @@ namespace CustomMacroPlugin0.GameList
                                 ? $"{left.Days}d {left.Hours}h {left.Minutes}m"
                                 : $"{left.Hours}h {left.Minutes}m {left.Seconds}s";
 
-                            return $"[License] ✔  ACTIVE"
-                                   + $"  |  Key: {MaskKey(licenseKey)}"
-                                   + $"  |  Expires: {exp:yyyy-MM-dd HH:mm} UTC"
-                                   + $"  |  Time left: {timeLeft}";
+                            return $"[License] ✔  ACTIVE" +
+                                   $"  |  Key: {MaskKey(licenseKey)}" +
+                                   $"  |  Expires: {exp:yyyy-MM-dd HH:mm} UTC" +
+                                   $"  |  Time left: {timeLeft}";
                         }
                     }
 
-                    return $"[License] ✔  ACTIVE  |  Key: {MaskKey(licenseKey)}"
-                            + "  |  Lifetime (no expiry)";
+                    // No expires_at → lifetime license
+                    return $"[License] ✔  ACTIVE  |  Key: {MaskKey(licenseKey)}" +
+                            "  |  Lifetime (no expiry)";
                 }
             }
             catch (Exception ex)
             {
                 return $"[License] Network error: {ex.Message}";
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // SETTINGS PERSISTENCE
+    // ════════════════════════════════════════════════════════════════════════════
+
+    internal static class SettingsStore
+    {
+        public static string LastDir { get; set; } =
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        public static void SaveTo(InnerViewModel vm, string path)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                string json = JsonSerializer.Serialize(Snapshot(vm),
+                    new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(path, json);
+            }
+            catch { }
+        }
+
+        public static void LoadFrom(InnerViewModel vm, string path)
+        {
+            try
+            {
+                if (!File.Exists(path)) return;
+                var snap = JsonSerializer.Deserialize<SettingsSnap>(File.ReadAllText(path));
+                if (snap == null) return;
+                Apply(snap, vm);
+            }
+            catch { }
+        }
+
+        private static readonly string AutoPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "EasyAimImproved", "autosave.eaprof");
+        public static void Save(InnerViewModel vm) => SaveTo(vm, AutoPath);
+        public static void Load(InnerViewModel vm) => LoadFrom(vm, AutoPath);
+
+        public static void ApplyResolutionToConfig(string filePath, int w, int h, int hz)
+        {
+            try
+            {
+                var lines = File.ReadAllLines(filePath);
+                bool anyChange = false;
+                var kwW = new[] { "ResolutionSizeX", "ResX", "FullscreenWidth", "ScreenWidth", "Width", "WindowWidth" };
+                var kwH = new[] { "ResolutionSizeY", "ResY", "FullscreenHeight", "ScreenHeight", "Height", "WindowHeight" };
+                var kwHz = new[] { "FrameRateLimit", "MaxFPS", "RefreshRate", "FramerateCap", "MaxFpsInGame" };
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string trimmed = lines[i].TrimStart();
+                    if (trimmed.StartsWith(";") || trimmed.StartsWith("//") || trimmed.StartsWith("#")) continue;
+                    foreach (var kw in kwW) if (TryReplaceConfigValue(ref lines[i], kw, w.ToString())) anyChange = true;
+                    foreach (var kw in kwH) if (TryReplaceConfigValue(ref lines[i], kw, h.ToString())) anyChange = true;
+                    foreach (var kw in kwHz) if (TryReplaceConfigValue(ref lines[i], kw, hz.ToString())) anyChange = true;
+                }
+                if (anyChange) File.WriteAllLines(filePath, lines);
+            }
+            catch { }
+        }
+
+        private static bool TryReplaceConfigValue(ref string line, string key, string value)
+        {
+            int eq = line.IndexOf('=');
+            if (eq < 0) return false;
+            string beforeEq = line.Substring(0, eq);
+            string baseKey;
+            int atIdx = beforeEq.IndexOf('@');
+            if (atIdx >= 0) baseKey = beforeEq.Substring(0, atIdx).Trim();
+            else baseKey = beforeEq.Trim();
+            if (!string.Equals(baseKey, key, StringComparison.OrdinalIgnoreCase)) return false;
+            string afterEq = line.Substring(eq + 1);
+            int commentIdx = afterEq.IndexOf(" //");
+            string comment = commentIdx >= 0 ? afterEq.Substring(commentIdx) : "";
+            line = $"{beforeEq}={value}{comment}";
+            return true;
+        }
+
+        public static void Reset(InnerViewModel vm)
+        {
+            vm.AntiRecoilR2Value = 20;
+            vm.AntiRecoilL2R2Value = 66;
+            vm.RapidFireValue = 60;
+            vm.HairTriggerThreshold = 30;
+            vm.HairTriggerProgressive = true;
+            vm.HairTriggerAmplification = 1.5;
+            vm.SpamActivationSelectedItem = YYSwapButton.Triangle;
+            vm.SpamTargetSelectedItem = YYSwapButton.Triangle;
+            vm.SpamPressMs = 40;
+            vm.SpamReleaseMs = 40;
+            vm.StabilizerModeSelectedItem = StabilizerMode.Orbit;
+            vm.StabilizerStrength = 0.08;
+            vm.StabilizerSpeed = 1.0;
+            vm.StabilizerOnlyADS = true;
+            vm.StabilizerOnlyFire = false;
+            vm.ColorAimStrengthValue = 62;
+            vm.ColorAimRadiusValue = 20;
+            vm.ColorAimRedValue = 255;
+            vm.ColorAimGreenValue = 80;
+            vm.ColorAimBlueValue = 80;
+            vm.ColorAimToleranceValue = 28;
+            vm.ProHexColorTarget = "FF00FF";
+            vm.ProAimAlpha = 0.42;
+            vm.ProAimBeta = 0.15;
+            vm.ProAimDecay = 0.55;
+            vm.ProAimPredict = 0.60;
+            vm.ProAimPredictFrames = 1.30;
+            vm.ProMagnetStrength = 1.80;
+            vm.ProMagnetRadius = 10;
+            vm.ProFrictionZone = 0.35;
+            vm.ProRecoilGlobal = 1.00;
+            vm.ProRecoilADS = 0.90;
+            vm.ProRecoilHipfire = 0.45;
+            vm.ProRecoilSmooth = 0.32;
+            vm.ProRecoilRampRate = 0.012;
+            vm.ProRecoilDynamicMax = 1.55;
+            vm.ProRecoilWindDown = 0.18;
+            vm.ProRecoilEarlyBoost = 1.35;
+            vm.ProRecoilEarlyShots = 5;
+            vm.ProRecoilHorizComp = 0.70;
+            vm.ProRecoilBurstResetMs = 250;
+            vm.ProLockStrength = 38.0;
+            vm.ProTrackingSpeed = 75.0;
+            vm.ProDetectionQuality = 3.0;
+            vm.ProDeadZonePx = 4.0;
+            vm.ProCoastFrames = 6;
+            vm.ProHueTolerance = 0.0;
+            vm.ProColorAimPresetSelectedItem = ColorAimPreset.HexInput;
+            vm.ProColorAimActivationSelectedItem = ColorAimActivation.ADSOnly;
+            vm.ProPatternModeSelectedItem = AimPatternMode.SpiralOut;
+            vm.ProPatternAmplitude = 0.18;
+            vm.ProPatternExtraParam = 20;
+            vm.ProPatternActivationModeSelectedItem = ActivationMode.ADSPlusFire;
+            vm.ProActivationModeSelectedItem = ActivationMode.ADSPlusFire;
+            vm.ProTimedDurationMs = 3000;
+            vm.ResolutionSelectedItem = "1920x1080 (FHD)";
+            vm.RefreshRateSelectedItem = "60 Hz";
+            vm.AppliedResolutionWidth = 2560;
+            vm.AppliedResolutionHeight = 1440;
+            vm.AppliedRefreshRate = 165;
+            vm.ProFovSelectedItem = "Max    (80 px)  — widest catch zone";
+            vm.ProFovOverlayEnabled = false;
+            vm.ProFovOverlayHexColor = "FF00FF";
+            vm.ProFovOverlayThickness = 1.5;
+            vm.ProFovOverlayOpacity = 200;
+            vm.ProHorizClampFactor = 0.55;
+            vm.ProVertBiasTop = 0.45;
+            vm.ProCentroidBlend = 0.80;
+        }
+
+        private static SettingsSnap Snapshot(InnerViewModel v) => new SettingsSnap
+        {
+            AntiRecoilR2 = v.AntiRecoilR2Value,
+            AntiRecoilL2R2 = v.AntiRecoilL2R2Value,
+            RapidFire = v.RapidFireValue,
+            HTThreshold = v.HairTriggerThreshold,
+            HTProgressive = v.HairTriggerProgressive,
+            HTAmplify = v.HairTriggerAmplification,
+            SpamActivation = (int)v.SpamActivationSelectedItem,
+            SpamTarget = (int)v.SpamTargetSelectedItem,
+            SpamPressMs = v.SpamPressMs,
+            SpamReleaseMs = v.SpamReleaseMs,
+            StabMode = (int)v.StabilizerModeSelectedItem,
+            StabStrength = v.StabilizerStrength,
+            StabSpeed = v.StabilizerSpeed,
+            StabOnlyADS = v.StabilizerOnlyADS,
+            StabOnlyFire = v.StabilizerOnlyFire,
+            CAStr = v.ColorAimStrengthValue,
+            CARad = v.ColorAimRadiusValue,
+            CAR = v.ColorAimRedValue,
+            CAG = v.ColorAimGreenValue,
+            CAB = v.ColorAimBlueValue,
+            CATol = v.ColorAimToleranceValue,
+            HexColorTarget = v.ProHexColorTarget,
+            AimAlpha = v.ProAimAlpha,
+            AimBeta = v.ProAimBeta,
+            AimDecay = v.ProAimDecay,
+            AimPredict = v.ProAimPredict,
+            AimPredFrames = v.ProAimPredictFrames,
+            MagStr = v.ProMagnetStrength,
+            MagRad = v.ProMagnetRadius,
+            Friction = v.ProFrictionZone,
+            RGlobal = v.ProRecoilGlobal,
+            RADS = v.ProRecoilADS,
+            RHip = v.ProRecoilHipfire,
+            RSmooth = v.ProRecoilSmooth,
+            RRamp = v.ProRecoilRampRate,
+            RDynMax = v.ProRecoilDynamicMax,
+            RWindDown = v.ProRecoilWindDown,
+            REarlyBoost = v.ProRecoilEarlyBoost,
+            REarlyShots = (int)v.ProRecoilEarlyShots,
+            RHorizComp = v.ProRecoilHorizComp,
+            RBurstReset = v.ProRecoilBurstResetMs,
+            LockStrength = v.ProLockStrength,
+            TrackingSpeed = v.ProTrackingSpeed,
+            DetectionQuality = v.ProDetectionQuality,
+            DeadZonePx = v.ProDeadZonePx,
+            CoastFrames = (int)v.ProCoastFrames,
+            HueTol = v.ProHueTolerance,
+            CAActivation = (int)v.ProColorAimActivationSelectedItem,
+            CAPreset = (int)v.ProColorAimPresetSelectedItem,
+            PatternMode = (int)v.ProPatternModeSelectedItem,
+            PatternAmp = v.ProPatternAmplitude,
+            PatternExtra = v.ProPatternExtraParam,
+            PatternActivation = (int)v.ProPatternActivationModeSelectedItem,
+            ActivationMode = (int)v.ProActivationModeSelectedItem,
+            TimedMs = v.ProTimedDurationMs,
+            Resolution = v.ResolutionSelectedItem,
+            RefreshRate = v.RefreshRateSelectedItem,
+            AppliedWidth = v.AppliedResolutionWidth,
+            AppliedHeight = v.AppliedResolutionHeight,
+            AppliedHz = v.AppliedRefreshRate,
+            FovSelected = v.ProFovSelectedItem,
+            FovOverlayEnabled = v.ProFovOverlayEnabled,
+            FovOverlayHexColor = v.ProFovOverlayHexColor,
+            FovOverlayThickness = v.ProFovOverlayThickness,
+            FovOverlayOpacity = v.ProFovOverlayOpacity,
+        };
+
+        private static void Apply(SettingsSnap s, InnerViewModel v)
+        {
+            v.AntiRecoilR2Value = s.AntiRecoilR2;
+            v.AntiRecoilL2R2Value = s.AntiRecoilL2R2;
+            v.RapidFireValue = s.RapidFire;
+            if (s.HTThreshold > 0) v.HairTriggerThreshold = s.HTThreshold;
+            v.HairTriggerProgressive = s.HTProgressive;
+            if (s.HTAmplify > 0) v.HairTriggerAmplification = s.HTAmplify;
+            v.SpamActivationSelectedItem = (YYSwapButton)s.SpamActivation;
+            v.SpamTargetSelectedItem = (YYSwapButton)s.SpamTarget;
+            if (s.SpamPressMs > 0) v.SpamPressMs = s.SpamPressMs;
+            if (s.SpamReleaseMs > 0) v.SpamReleaseMs = s.SpamReleaseMs;
+            v.StabilizerModeSelectedItem = (StabilizerMode)s.StabMode;
+            if (s.StabStrength > 0) v.StabilizerStrength = s.StabStrength;
+            if (s.StabSpeed > 0) v.StabilizerSpeed = s.StabSpeed;
+            v.StabilizerOnlyADS = s.StabOnlyADS;
+            v.StabilizerOnlyFire = s.StabOnlyFire;
+            v.ColorAimStrengthValue = s.CAStr;
+            v.ColorAimRadiusValue = s.CARad;
+            v.ColorAimRedValue = s.CAR;
+            v.ColorAimGreenValue = s.CAG;
+            v.ColorAimBlueValue = s.CAB;
+            v.ColorAimToleranceValue = s.CATol;
+            if (!string.IsNullOrEmpty(s.HexColorTarget)) v.ProHexColorTarget = s.HexColorTarget;
+            v.ProAimAlpha = s.AimAlpha;
+            v.ProAimBeta = s.AimBeta;
+            v.ProAimDecay = s.AimDecay;
+            v.ProAimPredict = s.AimPredict;
+            v.ProAimPredictFrames = s.AimPredFrames;
+            v.ProMagnetStrength = s.MagStr;
+            v.ProMagnetRadius = s.MagRad;
+            v.ProFrictionZone = s.Friction;
+            v.ProRecoilGlobal = s.RGlobal;
+            v.ProRecoilADS = s.RADS;
+            v.ProRecoilHipfire = s.RHip;
+            v.ProRecoilSmooth = s.RSmooth;
+            v.ProRecoilRampRate = s.RRamp;
+            v.ProRecoilDynamicMax = s.RDynMax;
+            v.ProRecoilWindDown = s.RWindDown;
+            v.ProRecoilEarlyBoost = s.REarlyBoost;
+            v.ProRecoilEarlyShots = s.REarlyShots;
+            v.ProRecoilHorizComp = s.RHorizComp;
+            if (s.RBurstReset > 0) v.ProRecoilBurstResetMs = s.RBurstReset;
+            if (s.LockStrength > 0) v.ProLockStrength = s.LockStrength;
+            if (s.TrackingSpeed > 0) v.ProTrackingSpeed = s.TrackingSpeed;
+            if (s.DetectionQuality > 0) v.ProDetectionQuality = s.DetectionQuality;
+            if (s.DeadZonePx > 0) v.ProDeadZonePx = s.DeadZonePx;
+            if (s.CoastFrames > 0) v.ProCoastFrames = s.CoastFrames;
+            v.ProHueTolerance = s.HueTol;
+            v.ProColorAimActivationSelectedItem = (ColorAimActivation)s.CAActivation;
+            v.ProColorAimPresetSelectedItem = (ColorAimPreset)s.CAPreset;
+            v.ProPatternModeSelectedItem = (AimPatternMode)s.PatternMode;
+            v.ProPatternAmplitude = s.PatternAmp;
+            v.ProPatternExtraParam = s.PatternExtra;
+            v.ProPatternActivationModeSelectedItem = (ActivationMode)s.PatternActivation;
+            v.ProActivationModeSelectedItem = (ActivationMode)s.ActivationMode;
+            v.ProTimedDurationMs = s.TimedMs;
+            if (!string.IsNullOrEmpty(s.Resolution)) v.ResolutionSelectedItem = s.Resolution;
+            if (!string.IsNullOrEmpty(s.RefreshRate)) v.RefreshRateSelectedItem = s.RefreshRate;
+            if (s.AppliedWidth > 0) v.AppliedResolutionWidth = s.AppliedWidth;
+            if (s.AppliedHeight > 0) v.AppliedResolutionHeight = s.AppliedHeight;
+            if (s.AppliedHz > 0) v.AppliedRefreshRate = s.AppliedHz;
+            if (!string.IsNullOrEmpty(s.FovSelected)) v.ProFovSelectedItem = s.FovSelected;
+            v.ProFovOverlayEnabled = s.FovOverlayEnabled;
+            if (!string.IsNullOrEmpty(s.FovOverlayHexColor)) v.ProFovOverlayHexColor = s.FovOverlayHexColor;
+            if (s.FovOverlayThickness > 0) v.ProFovOverlayThickness = s.FovOverlayThickness;
+            if (s.FovOverlayOpacity > 0) v.ProFovOverlayOpacity = s.FovOverlayOpacity;
+        }
+    }
+
+    internal class SettingsSnap
+    {
+        public double AntiRecoilR2 { get; set; }
+        public double AntiRecoilL2R2 { get; set; }
+        public double RapidFire { get; set; }
+        public double HTThreshold { get; set; } = 30;
+        public bool HTProgressive { get; set; } = true;
+        public double HTAmplify { get; set; } = 1.5;
+        public int SpamActivation { get; set; }
+        public int SpamTarget { get; set; }
+        public double SpamPressMs { get; set; } = 40;
+        public double SpamReleaseMs { get; set; } = 40;
+        public int StabMode { get; set; }
+        public double StabStrength { get; set; } = 0.08;
+        public double StabSpeed { get; set; } = 1.0;
+        public bool StabOnlyADS { get; set; } = true;
+        public bool StabOnlyFire { get; set; } = false;
+        public double CAStr { get; set; }
+        public double CARad { get; set; }
+        public double CAR { get; set; }
+        public double CAG { get; set; }
+        public double CAB { get; set; }
+        public double CATol { get; set; }
+        public string HexColorTarget { get; set; } = "FF00FF";
+        public double AimAlpha { get; set; }
+        public double AimBeta { get; set; }
+        public double AimDecay { get; set; }
+        public double AimPredict { get; set; }
+        public double AimPredFrames { get; set; }
+        public double MagStr { get; set; }
+        public double MagRad { get; set; }
+        public double Friction { get; set; }
+        public double RGlobal { get; set; }
+        public double RADS { get; set; }
+        public double RHip { get; set; }
+        public double RSmooth { get; set; }
+        public double RRamp { get; set; }
+        public double RDynMax { get; set; }
+        public double RWindDown { get; set; }
+        public double REarlyBoost { get; set; }
+        public int REarlyShots { get; set; }
+        public double RHorizComp { get; set; }
+        public double RBurstReset { get; set; } = 250;
+        public double LockStrength { get; set; } = 38.0;
+        public double TrackingSpeed { get; set; } = 75.0;
+        public double DetectionQuality { get; set; } = 3.0;
+        public double DeadZonePx { get; set; } = 4.0;
+        public int CoastFrames { get; set; } = 6;
+        public double HueTol { get; set; }
+        public int CAActivation { get; set; }
+        public int CAPreset { get; set; }
+        public int PatternMode { get; set; }
+        public double PatternAmp { get; set; }
+        public double PatternExtra { get; set; }
+        public int PatternActivation { get; set; }
+        public int ActivationMode { get; set; }
+        public double TimedMs { get; set; }
+        public string Resolution { get; set; }
+        public string RefreshRate { get; set; }
+        public int AppliedWidth { get; set; }
+        public int AppliedHeight { get; set; }
+        public int AppliedHz { get; set; }
+        public string FovSelected { get; set; } = "Max    (80 px)  — widest catch zone";
+        public bool FovOverlayEnabled { get; set; } = false;
+        public string FovOverlayHexColor { get; set; } = "FF00FF";
+        public double FovOverlayThickness { get; set; } = 1.5;
+        public double FovOverlayOpacity { get; set; } = 200;
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // MAIN CLASS
+    // ════════════════════════════════════════════════════════════════════════════
+
+    [SortIndex(-1)]
+    internal partial class Game_EasyAimImproved : MacroBase
+    {
+        private FovOverlayWindow _fovOverlay;
+        private bool _fovOverlayVisible = false;
+
+        private void SetFovOverlayVisible(bool show)
+        {
+            if (show)
+            {
+                if (_fovOverlay == null || !_fovOverlay.IsLoaded)
+                    _fovOverlay = new FovOverlayWindow();
+                RefreshFovOverlay();
+                if (!_fovOverlay.IsVisible) _fovOverlay.Show();
+                _fovOverlayVisible = true;
+            }
+            else
+            {
+                if (_fovOverlay != null && _fovOverlay.IsVisible)
+                    _fovOverlay.Hide();
+                _fovOverlayVisible = false;
+            }
+        }
+
+        private void RefreshFovOverlay()
+        {
+            if (_fovOverlay == null) return;
+            byte alpha = (byte)Math.Clamp(viewmodel.ProFovOverlayOpacity, 0, 255);
+            System.Windows.Media.Color col = System.Windows.Media.Color.FromArgb(alpha, 255, 0, 255);
+            if (TryParseHex(viewmodel.ProFovOverlayHexColor, out int hr, out int hg, out int hb))
+                col = System.Windows.Media.Color.FromArgb(alpha, (byte)hr, (byte)hg, (byte)hb);
+            _fovOverlay.Refresh(viewmodel.FovRadiusPx, col, viewmodel.ProFovOverlayThickness);
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // SECTION 1: Init()
+        // ════════════════════════════════════════════════════════════════════════
+
+        public override void Init()
+        {
+            base.MainGate.Text = "EasyAim PRO  ◈  v6.0";
+
+            // ── System Panel ──────────────────────────────────────────────────
+            var gSys = CreateTVN("⚙  System Panel", false);
+
+            // ════════════════════════════════════════════════════════════════
+            // LICENSE STATUS — very top of System Panel
+            // ════════════════════════════════════════════════════════════════
+            gSys.AddEx(() => MacroBase.CreateTextBlock("── License ──", Colors.Aqua));
+
+            // Key input box — pre-filled from saved cache
+            gSys.AddEx(() =>
+            {
+                string saved = PluginLicenseInfo.LoadKey();
+                if (!string.IsNullOrEmpty(saved)) viewmodel.PluginLicenseKey = saved;
+
+                var tb = new System.Windows.Controls.TextBox
+                {
+                    Text = viewmodel.PluginLicenseKey,
+                    MaxLength = 64,
+                    Width = 260,
+                    Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 220, 255)),
+                    Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(20, 20, 30)),
+                    BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 180, 255)),
+                    FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+                    FontSize = 13,
+                    Padding = new System.Windows.Thickness(6, 3, 6, 3),
+                    ToolTip = "Paste your license key here"
+                };
+                tb.TextChanged += (s, e) =>
+                    viewmodel.PluginLicenseKey = tb.Text.Trim().ToUpperInvariant();
+
+                var lbl = MacroBase.CreateTextBlock("  Key: ", Colors.White);
+                var panel = new System.Windows.Controls.StackPanel
+                {
+                    Orientation = System.Windows.Controls.Orientation.Horizontal,
+                    Margin = new System.Windows.Thickness(0, 2, 0, 2)
+                };
+                panel.Children.Add(lbl);
+                panel.Children.Add(tb);
+                return panel;
+            });
+
+            // Inline status line — updated in place when Check is pressed
+            System.Windows.Controls.TextBlock _licStatusBlock = null;
+            gSys.AddEx(() =>
+            {
+                _licStatusBlock = MacroBase.CreateTextBlock(
+                    "  Status: —  (press Check to query)", Colors.DarkGray);
+                _licStatusBlock.Margin = new System.Windows.Thickness(0, 1, 0, 4);
+                return _licStatusBlock;
+            });
+
+            // Check + Save buttons on one row
+            gSys.AddEx(() =>
+            {
+                var btnCheck = MacroBase.CreateTextBlock("[ 🔍  Check License ]", Colors.Aqua);
+                btnCheck.Cursor = System.Windows.Input.Cursors.Hand;
+                btnCheck.MouseLeftButtonUp += async (s, e) =>
+                {
+                    if (_licStatusBlock != null)
+                    {
+                        _licStatusBlock.Text = "  Status: querying server…";
+                        _licStatusBlock.Foreground = new SolidColorBrush(Colors.Yellow);
+                    }
+
+                    string status = await PluginLicenseInfo.QueryStatusAsync(viewmodel.PluginLicenseKey);
+                    MacroBase.Print(status);
+
+                    if (_licStatusBlock != null)
+                    {
+                        bool ok = status.Contains("✔");
+                        _licStatusBlock.Dispatcher.InvokeAsync(() =>
+                        {
+                            _licStatusBlock.Text = "  Status: " + status.Replace("[License] ", "");
+                            _licStatusBlock.Foreground = new SolidColorBrush(
+                                ok ? Colors.Lime : Colors.OrangeRed);
+                        });
+                    }
+                };
+
+                var btnSave = MacroBase.CreateTextBlock("   [ 💾  Save Key ]", Colors.LightGreen);
+                btnSave.Cursor = System.Windows.Input.Cursors.Hand;
+                btnSave.MouseLeftButtonUp += (s, e) =>
+                {
+                    string k = viewmodel.PluginLicenseKey;
+                    if (string.IsNullOrEmpty(k))
+                    { MacroBase.Print("[License] Nothing to save — key is empty."); return; }
+                    PluginLicenseInfo.SaveKey(k);
+                    MacroBase.Print($"[License] Key saved (encrypted).  {PluginLicenseInfo.MaskKey(k)}");
+                };
+
+                var row = new System.Windows.Controls.StackPanel
+                {
+                    Orientation = System.Windows.Controls.Orientation.Horizontal,
+                    Margin = new System.Windows.Thickness(0, 0, 0, 6)
+                };
+                row.Children.Add(btnCheck);
+                row.Children.Add(btnSave);
+                return row;
+            });
+
+            // ── Configuration ─────────────────────────────────────────────────
+            gSys.AddEx(() => MacroBase.CreateTextBlock("── Configuration ──", Colors.LightGray));
+            gSys.AddEx(() =>
+            {
+                var tb = MacroBase.CreateTextBlock("[ 💾  Save Settings As... ]", Colors.LightGreen);
+                tb.MouseLeftButtonUp += (s, e) =>
+                {
+                    try
+                    {
+                        var dlg = new Microsoft.Win32.SaveFileDialog
+                        {
+                            Title = "Save EasyAim Settings",
+                            Filter = "EasyAim Profile (*.eaprof)|*.eaprof|JSON (*.json)|*.json",
+                            DefaultExt = ".eaprof",
+                            FileName = "MyProfile",
+                            InitialDirectory = SettingsStore.LastDir
+                        };
+                        if (dlg.ShowDialog() == true)
+                        {
+                            SettingsStore.SaveTo(viewmodel, dlg.FileName);
+                            SettingsStore.LastDir = System.IO.Path.GetDirectoryName(dlg.FileName);
+                            MacroBase.Print($"[EasyMo] Settings saved → {dlg.FileName}");
+                        }
+                    }
+                    catch (Exception ex) { MacroBase.Print($"[EasyMo] Save failed: {ex.Message}"); }
+                };
+                return tb;
+            });
+            gSys.AddEx(() =>
+            {
+                var tb = MacroBase.CreateTextBlock("[ 📂  Load Settings... ]", Colors.LightBlue);
+                tb.MouseLeftButtonUp += (s, e) =>
+                {
+                    try
+                    {
+                        var dlg = new Microsoft.Win32.OpenFileDialog
+                        {
+                            Title = "Load EasyAim Settings",
+                            Filter = "EasyAim Profile (*.eaprof)|*.eaprof|JSON (*.json)|*.json|All Files (*.*)|*.*",
+                            InitialDirectory = SettingsStore.LastDir
+                        };
+                        if (dlg.ShowDialog() == true)
+                        {
+                            SettingsStore.LoadFrom(viewmodel, dlg.FileName);
+                            SettingsStore.LastDir = System.IO.Path.GetDirectoryName(dlg.FileName);
+                            MacroBase.Print($"[EasyMo] Settings loaded ← {dlg.FileName}");
+                        }
+                    }
+                    catch (Exception ex) { MacroBase.Print($"[EasyMo] Load failed: {ex.Message}"); }
+                };
+                return tb;
+            });
+            gSys.AddEx(() =>
+            {
+                var tb = MacroBase.CreateTextBlock("[ 🔄  Reset to Defaults ]", Colors.OrangeRed);
+                tb.MouseLeftButtonUp += (s, e) =>
+                {
+                    SettingsStore.Reset(viewmodel);
+                    MacroBase.Print("[EasyMo] Reset to defaults.");
+                };
+                return tb;
+            });
+
+            gSys.AddEx(() => MacroBase.CreateTextBlock("── Game Config File ──", Colors.LightGray));
+            gSys.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ResolutionItemsSource),
+                nameof(InnerViewModel.ResolutionSelectedItem), "Resolution", 0));
+            gSys.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.RefreshRateItemsSource),
+                nameof(InnerViewModel.RefreshRateSelectedItem), "Refresh Rate", 0));
+            gSys.AddEx(() =>
+            {
+                var tb = MacroBase.CreateTextBlock("[ 📁  Browse Game Config File... ]", Colors.Khaki);
+                tb.MouseLeftButtonUp += (s, e) =>
+                {
+                    try
+                    {
+                        var dlg = new Microsoft.Win32.OpenFileDialog
+                        {
+                            Title = "Select Game Config",
+                            Filter = "Config Files (*.txt;*.ini;*.cfg)|*.txt;*.ini;*.cfg|All Files (*.*)|*.*",
+                            InitialDirectory = System.Environment.GetFolderPath(
+                                System.Environment.SpecialFolder.MyDocuments)
+                        };
+                        if (dlg.ShowDialog() == true)
+                        {
+                            viewmodel.GameConfigFilePath = dlg.FileName;
+                            MacroBase.Print($"[EasyMo] Config path set → {dlg.FileName}");
+                        }
+                    }
+                    catch (Exception ex) { MacroBase.Print($"[EasyMo] Path error: {ex.Message}"); }
+                };
+                return tb;
+            });
+            gSys.AddEx(() =>
+            {
+                var tb = MacroBase.CreateTextBlock("[ ✔  Apply Resolution to Game Config ]", Colors.Gold);
+                tb.MouseLeftButtonUp += (s, e) =>
+                {
+                    try
+                    {
+                        string res = viewmodel.ResolutionSelectedItem ?? "";
+                        string hz = viewmodel.RefreshRateSelectedItem ?? "";
+                        var parts = res.Split(new[] { 'x', ' ', '(' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length >= 2
+                            && int.TryParse(parts[0], out int w)
+                            && int.TryParse(parts[1], out int h))
+                        {
+                            viewmodel.AppliedResolutionWidth = w;
+                            viewmodel.AppliedResolutionHeight = h;
+                        }
+                        var hzP = hz.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (hzP.Length >= 1 && int.TryParse(hzP[0], out int rate))
+                            viewmodel.AppliedRefreshRate = rate;
+
+                        string path = viewmodel.GameConfigFilePath;
+                        if (!string.IsNullOrEmpty(path) && System.IO.File.Exists(path))
+                        {
+                            SettingsStore.ApplyResolutionToConfig(path,
+                                viewmodel.AppliedResolutionWidth,
+                                viewmodel.AppliedResolutionHeight,
+                                viewmodel.AppliedRefreshRate);
+                            MacroBase.Print(
+                                $"[EasyMo] Applied: {viewmodel.AppliedResolutionWidth}x" +
+                                $"{viewmodel.AppliedResolutionHeight} @ {viewmodel.AppliedRefreshRate} Hz → {path}");
+                        }
+                        else
+                        {
+                            MacroBase.Print(
+                                $"[EasyMo] Display set: {viewmodel.AppliedResolutionWidth}x" +
+                                $"{viewmodel.AppliedResolutionHeight} @ {viewmodel.AppliedRefreshRate} Hz  " +
+                                "(browse config first!)");
+                        }
+                    }
+                    catch (Exception ex) { MacroBase.Print($"[EasyMo] Apply failed: {ex.Message}"); }
+                };
+                return tb;
+            });
+
+            base.MainGate.Add(gSys);
+
+            // ── BASIC SETTINGS ────────────────────────────────────────────────
+            base.MainGate.AddEx(() => MacroBase.CreateTextBlock(
+                "━━━━━━  BASIC SETTINGS  ━━━━━━", Colors.Yellow));
+
+            base.MainGate.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ADSComboBoxItemsSource),
+                nameof(InnerViewModel.ADSComboBoxSelectedItem), "ADS Button", 1));
+            base.MainGate.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.GunfireComboBoxItemsSource),
+                nameof(InnerViewModel.GunfireComboBoxSelectedItem), "Gunfire Button", 1));
+            base.MainGate.AddEx(() => MacroBase.CreateTextBlock(
+                "────────────────────────────", Colors.Yellow));
+
+            // ── L2R2 HairTrigger v2 ───────────────────────────────────────────
+            var gHT = CreateTVN("L2R2 HairTrigger  [v2 — Analog Precision]", true);
+            gHT.AddEx(() => MacroBase.CreateTextBlock(
+                "Triggers fire the instant you touch them — no full press needed.\n" +
+                "Progressive mode scales analog pressure for maximum precision.",
+                Colors.Gold));
+            gHT.AddEx(() => MacroBase.CreateSlider(1.0, 120.0, viewmodel,
+                nameof(InnerViewModel.HairTriggerThreshold), 1.0,
+                "Activation Point:", 30.0, "(1=feather touch  120=deep press)"));
+            gHT.Add(CreateTVN("Progressive Fill  (smoother analog output)", false));
+            gHT.AddEx(() => MacroBase.CreateSlider(1.0, 3.0, viewmodel,
+                nameof(InnerViewModel.HairTriggerAmplification), 0.1,
+                "Amplification:", 1.5, "x  (1.0=linear  2.0+=aggressive)"));
+            base.MainGate.Add(gHT);
+
+            // ── AutoSprint ────────────────────────────────────────────────────
+            base.MainGate.Add(CreateTVN("AutoSprint", true));
+
+            // ── Y-Axis AntiRecoil v2 ──────────────────────────────────────────
+            var gAR = CreateTVN("Y-Axis AntiRecoil  [v2 — Pattern + Dynamics]", true);
+            gAR.Add(CreateTVN("Invert Y-Axis", false));
+            gAR.AddEx(() => MacroBase.CreateTextBlock("── Compensation Strength ──", Colors.LightGray));
+            gAR.AddEx(() => MacroBase.CreateTextBlock("  Hipfire/Gunfire only (R2 or R1):", Colors.LightGray));
+            gAR.AddEx(() => MacroBase.CreateSlider(0.0, 100.0, viewmodel,
+                nameof(InnerViewModel.AntiRecoilR2Value), 1.0, "", 20.0,
+                "  0=no correction  100=max compensation"));
+            gAR.AddEx(() => MacroBase.CreateTextBlock("  ADS + Gunfire (full sustained fire):", Colors.LightGray));
+            gAR.AddEx(() => MacroBase.CreateSlider(0.0, 100.0, viewmodel,
+                nameof(InnerViewModel.AntiRecoilL2R2Value), 1.0, "", 66.0,
+                "  50=typical balanced"));
+            gAR.AddEx(() => MacroBase.CreateTextBlock("── Dynamics ──", Colors.LightGray));
+            gAR.AddEx(() => MacroBase.CreateSlider(50.0, 1000.0, viewmodel,
+                nameof(InnerViewModel.ProRecoilBurstResetMs), 25.0,
+                "Burst Reset Gap:", 250.0, "ms"));
+            gAR.AddEx(() => MacroBase.CreateSlider(1.0, 3.0, viewmodel,
+                nameof(InnerViewModel.ProRecoilEarlyBoost), 0.05,
+                "First-Shot Boost:", 1.35, "x"));
+            gAR.AddEx(() => MacroBase.CreateSlider(1.0, 15.0, viewmodel,
+                nameof(InnerViewModel.ProRecoilEarlyShots), 1.0,
+                "Boost Shot Count:", 5.0, "shots"));
+            gAR.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel,
+                nameof(InnerViewModel.ProRecoilHorizComp), 0.01,
+                "Horizontal Comp:", 0.70, "  0=ignore H  1=full H"));
+            gAR.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel,
+                nameof(InnerViewModel.ProRecoilWindDown), 0.01,
+                "Wind-Down Rate:", 0.18, ""));
+            base.MainGate.Add(gAR);
+
+            // ── RapidFire ─────────────────────────────────────────────────────
+            var g3 = CreateTVN("RapidFire", false);
+            g3.AddEx(() => MacroBase.CreateSlider(5.0, 255.0, viewmodel,
+                nameof(InnerViewModel.RapidFireValue), 1.0, "", 60.0, "ms"));
+            base.MainGate.Add(g3);
+
+            // ── Rapid Spam ────────────────────────────────────────────────────
+            var gSpam = CreateTVN("🔁  Rapid Button Spam", false);
+            gSpam.AddEx(() => MacroBase.CreateTextBlock(
+                "Hold the Activation button → spams the Target button at your chosen speed.",
+                Colors.Gold));
+            gSpam.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.SpamActivationItemsSource),
+                nameof(InnerViewModel.SpamActivationSelectedItem), "Activation Button", 0));
+            gSpam.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.SpamTargetItemsSource),
+                nameof(InnerViewModel.SpamTargetSelectedItem), "Target Button", 0));
+            gSpam.AddEx(() => MacroBase.CreateSlider(10.0, 200.0, viewmodel,
+                nameof(InnerViewModel.SpamPressMs), 5.0, "Press Duration:", 40.0, "ms"));
+            gSpam.AddEx(() => MacroBase.CreateSlider(10.0, 200.0, viewmodel,
+                nameof(InnerViewModel.SpamReleaseMs), 5.0, "Release Gap:", 40.0, "ms"));
+            base.MainGate.Add(gSpam);
+
+            // ── Aim Stabilizer ────────────────────────────────────────────────
+            var gStab = CreateTVN("🎮  Aim Stabilizer", true);
+            gStab.AddEx(() => MacroBase.CreateTextBlock(
+                "Applies subtle stick corrections while ADS. Orbit mode recommended.",
+                Colors.Gold));
+            gStab.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.StabilizerModeItemsSource),
+                nameof(InnerViewModel.StabilizerModeSelectedItem), "Stabilizer Mode", 0));
+            gStab.AddEx(() => MacroBase.CreateSlider(0.01, 1.0, viewmodel,
+                nameof(InnerViewModel.StabilizerStrength), 0.01, "Strength:", 0.08, ""));
+            gStab.AddEx(() => MacroBase.CreateSlider(0.1, 5.0, viewmodel,
+                nameof(InnerViewModel.StabilizerSpeed), 0.1, "Speed:", 1.0, ""));
+            gStab.Add(CreateTVN("Only while ADS  (uncheck = always on)", false));
+            gStab.Add(CreateTVN("Only while Firing", false));
+            base.MainGate.Add(gStab);
+
+            // ── PRO MODE ─────────────────────────────────────────────────────
+            base.MainGate.AddEx(() => MacroBase.CreateTextBlock(
+                "━━━━━━━━━━  PRO MODE  ━━━━━━━━━━", Colors.Cyan));
+
+            // ── Color Aim Assist PRO ──────────────────────────────────────────
+            var gCA = CreateTVN("🎯  PRO: Color Aim Assist  [v6 — DRIFT FIXED]", true);
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "v6 IMPROVEMENT: Vertical-bias centroid + horizontal outlier rejection.\n" +
+                "Aim no longer drifts left/right along enemy outline edges.",
+                Colors.Lime));
+            gCA.AddEx(() => MacroBase.CreateTextBlock("── Activation ──", Colors.Cyan));
+            gCA.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ProColorAimActivationItemsSource),
+                nameof(InnerViewModel.ProColorAimActivationSelectedItem), "Activate when", 0));
+            gCA.AddEx(() => MacroBase.CreateTextBlock("── Target Color ──", Colors.Cyan));
+            gCA.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ProColorAimPresetItemsSource),
+                nameof(InnerViewModel.ProColorAimPresetSelectedItem), "Color Preset", 0));
+
+            gCA.AddEx(() =>
+            {
+                var tb = new System.Windows.Controls.TextBox
+                {
+                    Text = viewmodel.ProHexColorTarget,
+                    MaxLength = 6,
+                    Width = 130,
+                    Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 255)),
+                    Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(30, 30, 30)),
+                    BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 255)),
+                    FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+                    FontSize = 14,
+                    Padding = new System.Windows.Thickness(4, 2, 4, 2),
+                    ToolTip = "RRGGBB hex  e.g. FF00FF"
+                };
+                tb.TextChanged += (s, e) =>
+                {
+                    string raw = tb.Text.TrimStart('#').ToUpperInvariant();
+                    if (raw.Length == 6)
+                    {
+                        viewmodel.ProHexColorTarget = raw;
+                        if (TryParseHex(raw, out int hr, out int hg, out int hb))
+                        {
+                            tb.BorderBrush = new SolidColorBrush(
+                                System.Windows.Media.Color.FromRgb((byte)hr, (byte)hg, (byte)hb));
+                            _colorAimEngine.HexTargetR = hr;
+                            _colorAimEngine.HexTargetG = hg;
+                            _colorAimEngine.HexTargetB = hb;
+                        }
+                    }
+                };
+                var lbl = MacroBase.CreateTextBlock("  HEX #", Colors.White);
+                var panel = new System.Windows.Controls.StackPanel
+                { Orientation = System.Windows.Controls.Orientation.Horizontal };
+                panel.Children.Add(lbl); panel.Children.Add(tb);
+                return panel;
+            });
+
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "  Custom RGB (only when Preset = Custom):", Colors.LightGray));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.0, 255.0, viewmodel, nameof(InnerViewModel.ColorAimRedValue), 1.0, "R:", 255.0, ""));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.0, 255.0, viewmodel, nameof(InnerViewModel.ColorAimGreenValue), 1.0, "G:", 80.0, ""));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.0, 255.0, viewmodel, nameof(InnerViewModel.ColorAimBlueValue), 1.0, "B:", 80.0, ""));
+
+            gCA.AddEx(() => MacroBase.CreateTextBlock("── Scan Zone (FOV) ──", Colors.Cyan));
+            gCA.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ProFovItemsSource),
+                nameof(InnerViewModel.ProFovSelectedItem), "FOV Zone", 0));
+
+            gCA.AddEx(() => MacroBase.CreateTextBlock("── FOV Circle Overlay ──", Colors.Lime));
+            gCA.AddEx(() =>
+            {
+                var btn = MacroBase.CreateTextBlock(
+                    viewmodel.ProFovOverlayEnabled ? "[ 🟢  FOV Overlay: ON ]" : "[ ⚫  FOV Overlay: OFF ]",
+                    viewmodel.ProFovOverlayEnabled ? Colors.Lime : Colors.Gray);
+                btn.Cursor = System.Windows.Input.Cursors.Hand;
+                btn.MouseLeftButtonUp += (s, e) =>
+                {
+                    viewmodel.ProFovOverlayEnabled = !viewmodel.ProFovOverlayEnabled;
+                    btn.Text = viewmodel.ProFovOverlayEnabled
+                        ? "[ 🟢  FOV Overlay: ON ]" : "[ ⚫  FOV Overlay: OFF ]";
+                    btn.Foreground = new SolidColorBrush(
+                        viewmodel.ProFovOverlayEnabled ? Colors.Lime : Colors.Gray);
+                    System.Windows.Application.Current?.Dispatcher.InvokeAsync(() =>
+                        SetFovOverlayVisible(viewmodel.ProFovOverlayEnabled));
+                };
+                return btn;
+            });
+
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "  Ring Color — type any hex color:", Colors.LightGray));
+            gCA.AddEx(() =>
+            {
+                var tb = new System.Windows.Controls.TextBox
+                {
+                    Text = viewmodel.ProFovOverlayHexColor,
+                    MaxLength = 6,
+                    Width = 130,
+                    Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255)),
+                    Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(30, 30, 30)),
+                    FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+                    FontSize = 14,
+                    Padding = new System.Windows.Thickness(4, 2, 4, 2),
+                    ToolTip = "Ring color RRGGBB  e.g. 00FF00=green  FF0000=red  00FFFF=cyan"
+                };
+                if (TryParseHex(viewmodel.ProFovOverlayHexColor, out int ir, out int ig, out int ib))
+                    tb.BorderBrush = new SolidColorBrush(
+                        System.Windows.Media.Color.FromRgb((byte)ir, (byte)ig, (byte)ib));
+
+                tb.TextChanged += (s, e) =>
+                {
+                    string raw = tb.Text.TrimStart('#').ToUpperInvariant();
+                    if (raw.Length == 6)
+                    {
+                        viewmodel.ProFovOverlayHexColor = raw;
+                        if (TryParseHex(raw, out int hr, out int hg, out int hb))
+                        {
+                            tb.BorderBrush = new SolidColorBrush(
+                                System.Windows.Media.Color.FromRgb((byte)hr, (byte)hg, (byte)hb));
+                            if (viewmodel.ProFovOverlayEnabled)
+                                System.Windows.Application.Current?.Dispatcher.InvokeAsync(
+                                    () => RefreshFovOverlay());
+                        }
+                    }
+                };
+
+                var lbl = MacroBase.CreateTextBlock("  Ring # ", Colors.White);
+                var panel = new System.Windows.Controls.StackPanel
+                { Orientation = System.Windows.Controls.Orientation.Horizontal };
+                panel.Children.Add(lbl);
+                panel.Children.Add(tb);
+                return panel;
+            });
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "  FF0000=Red  00FF00=Green  00FFFF=Cyan  FFFF00=Yellow  FF00FF=Pink",
+                Colors.DarkGray));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.5, 6.0, viewmodel,
+                nameof(InnerViewModel.ProFovOverlayThickness), 0.5, "Ring Thickness:", 1.5, "px"));
+            gCA.AddEx(() => MacroBase.CreateSlider(20.0, 255.0, viewmodel,
+                nameof(InnerViewModel.ProFovOverlayOpacity), 5.0, "Ring Opacity:", 200.0, "(20=faint  255=solid)"));
+
+            gCA.AddEx(() => MacroBase.CreateTextBlock("── Aim Behavior ──", Colors.Cyan));
+            gCA.AddEx(() => MacroBase.CreateSlider(5.0, 100.0, viewmodel,
+                nameof(InnerViewModel.ProLockStrength), 1.0, "Aim Strength:", 38.0, "% (5=gentle  100=max)"));
+            gCA.AddEx(() => MacroBase.CreateSlider(5.0, 100.0, viewmodel,
+                nameof(InnerViewModel.ProTrackingSpeed), 1.0, "Tracking Speed:", 75.0, "(5=smooth  100=instant)"));
+            gCA.AddEx(() => MacroBase.CreateSlider(1.0, 5.0, viewmodel,
+                nameof(InnerViewModel.ProDetectionQuality), 1.0, "Detection Quality:", 3.0, "(1=loose  5=precise)"));
+
+            gCA.AddEx(() => MacroBase.CreateTextBlock("── Anti-Drift Controls (v6 new) ──", Colors.Lime));
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "  Horiz Clamp: how wide left/right the centroid can spread.\n" +
+                "  Lower = tighter center, less L/R drift. Default 0.55 recommended.",
+                Colors.DarkGray));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.1, 1.0, viewmodel,
+                nameof(InnerViewModel.ProHorizClampFactor), 0.05,
+                "Horiz Clamp:", 0.55, "  (0.1=very tight  1.0=full width)"));
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "  Vert Bias Top: fraction of bbox height that gets 3× weight upward.\n" +
+                "  0.45 means top 45% of detected pixels aim toward head/torso.",
+                Colors.DarkGray));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.1, 0.9, viewmodel,
+                nameof(InnerViewModel.ProVertBiasTop), 0.05,
+                "Vert Bias Top:", 0.45, "  (0.2=very top  0.9=most of body)"));
+            gCA.AddEx(() => MacroBase.CreateTextBlock(
+                "  Centroid Blend: how much weighted centroid vs pure bbox center.\n" +
+                "  Higher = more precise tracking, lower = more stable.",
+                Colors.DarkGray));
+            gCA.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel,
+                nameof(InnerViewModel.ProCentroidBlend), 0.05,
+                "Centroid Blend:", 0.80, "  (0=bbox only  1=centroid only)"));
+            base.MainGate.Add(gCA);
+
+            // ── Color Aim Smoother PRO ────────────────────────────────────────
+            var gSmooth = CreateTVN("〜  PRO: Color Aim Smoother", false);
+            gSmooth.AddEx(() => MacroBase.CreateSlider(0.05, 1.0, viewmodel, nameof(InnerViewModel.ProAimAlpha), 0.01, "Alpha (position):", 0.42, ""));
+            gSmooth.AddEx(() => MacroBase.CreateSlider(0.01, 0.5, viewmodel, nameof(InnerViewModel.ProAimBeta), 0.01, "Beta (velocity):", 0.15, ""));
+            gSmooth.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProAimDecay), 0.01, "Decay:", 0.55, ""));
+            gSmooth.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProAimPredict), 0.01, "Stick Lead:", 0.60, ""));
+            gSmooth.AddEx(() => MacroBase.CreateSlider(0.0, 3.0, viewmodel, nameof(InnerViewModel.ProAimPredictFrames), 0.05, "Predict Frames:", 1.30, ""));
+            base.MainGate.Add(gSmooth);
+
+            // ── Sticky Aim PRO ────────────────────────────────────────────────
+            var gMag = CreateTVN("🧲  PRO: Sticky Aim (Magnet)", false);
+            gMag.AddEx(() => MacroBase.CreateSlider(0.0, 5.0, viewmodel, nameof(InnerViewModel.ProMagnetStrength), 0.05, "Magnet Strength:", 1.80, ""));
+            gMag.AddEx(() => MacroBase.CreateSlider(1.0, 40.0, viewmodel, nameof(InnerViewModel.ProMagnetRadius), 1.0, "Magnet Radius:", 10.0, "px"));
+            gMag.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProFrictionZone), 0.01, "Friction Zone:", 0.35, ""));
+            base.MainGate.Add(gMag);
+
+            // ── Recoil Engine PRO ─────────────────────────────────────────────
+            var gRecoil = CreateTVN("↑  PRO: Recoil Engine", false);
+            gRecoil.AddEx(() => MacroBase.CreateTextBlock("── Multipliers ──", Colors.LightGray));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.1, 3.0, viewmodel, nameof(InnerViewModel.ProRecoilGlobal), 0.05, "Global Multiplier:", 1.00, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.1, 2.0, viewmodel, nameof(InnerViewModel.ProRecoilADS), 0.05, "ADS Multiplier:", 0.90, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProRecoilHipfire), 0.05, "Hipfire Multiplier:", 0.45, ""));
+            gRecoil.AddEx(() => MacroBase.CreateTextBlock("── Dynamics ──", Colors.LightGray));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProRecoilSmooth), 0.01, "Smoothing Alpha:", 0.32, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.001, 0.05, viewmodel, nameof(InnerViewModel.ProRecoilRampRate), 0.001, "Ramp Rate:", 0.012, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(1.0, 3.0, viewmodel, nameof(InnerViewModel.ProRecoilDynamicMax), 0.05, "Dynamic Max:", 1.55, ""));
+            gRecoil.AddEx(() => MacroBase.CreateTextBlock("── Advanced ──", Colors.LightGray));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProRecoilWindDown), 0.01, "Wind-Down Rate:", 0.18, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(1.0, 3.0, viewmodel, nameof(InnerViewModel.ProRecoilEarlyBoost), 0.05, "First-Shot Boost:", 1.35, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(1.0, 15.0, viewmodel, nameof(InnerViewModel.ProRecoilEarlyShots), 1.0, "Boost Shot Count:", 5.0, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProRecoilHorizComp), 0.01, "Horiz Compensation:", 0.70, ""));
+            gRecoil.AddEx(() => MacroBase.CreateSlider(50.0, 1000.0, viewmodel, nameof(InnerViewModel.ProRecoilBurstResetMs), 25.0, "Burst Reset Gap:", 250.0, "ms"));
+            base.MainGate.Add(gRecoil);
+
+            // ── Aim Pattern PRO ───────────────────────────────────────────────
+            var gPat = CreateTVN("◎  PRO: Aim Pattern", false);
+            gPat.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ProPatternModeItemsSource),
+                nameof(InnerViewModel.ProPatternModeSelectedItem), "Pattern Mode", 0));
+            gPat.AddEx(() => MacroBase.CreateSlider(0.0, 1.0, viewmodel, nameof(InnerViewModel.ProPatternAmplitude), 0.01, "Amplitude:", 0.18, ""));
+            gPat.AddEx(() => MacroBase.CreateSlider(0.0, 60.0, viewmodel, nameof(InnerViewModel.ProPatternExtraParam), 0.5, "Extra Param:", 20.0, ""));
+            gPat.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ProPatternActivationModeItemsSource),
+                nameof(InnerViewModel.ProPatternActivationModeSelectedItem), "Pattern Activation", 0));
+            base.MainGate.Add(gPat);
+
+            // ── Override Mode ─────────────────────────────────────────────────
+            var gAct = CreateTVN("⚡  PRO: Color Aim Override Mode", false);
+            gAct.AddEx(() => MacroBase.CreateComboBox(viewmodel,
+                nameof(InnerViewModel.ProActivationModeItemsSource),
+                nameof(InnerViewModel.ProActivationModeSelectedItem), "Override Trigger", 0));
+            gAct.AddEx(() => MacroBase.CreateSlider(500.0, 10000.0, viewmodel,
+                nameof(InnerViewModel.ProTimedDurationMs), 100.0, "Timed Duration:", 3000.0, "ms"));
+            base.MainGate.Add(gAct);
+        }
+
+        // ── Hex parse helper ──────────────────────────────────────────────────
+        private static bool TryParseHex(string hex, out int r, out int g, out int b)
+        {
+            r = g = b = 0;
+            hex = hex.TrimStart('#').Trim();
+            if (hex.Length != 6) return false;
+            try
+            {
+                r = Convert.ToInt32(hex.Substring(0, 2), 16);
+                g = Convert.ToInt32(hex.Substring(2, 2), 16);
+                b = Convert.ToInt32(hex.Substring(4, 2), 16);
+                return true;
+            }
+            catch { return false; }
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // SECTION 2: UpdateState()
+        // ════════════════════════════════════════════════════════════════════════
+
+        public override void UpdateState()
+        {
+            if (!base.MainGate.Enable) return;
+
+            // ── Periodic license check (every 5 minutes) ──────────────────────
+            long nowTick = Environment.TickCount64;
+            if (nowTick - _lastLicenseLogTick >= LicenseLogMs)
+            {
+                _lastLicenseLogTick = nowTick;
+                string keySnap = viewmodel.PluginLicenseKey;
+                if (!string.IsNullOrEmpty(keySnap))
+                    System.Threading.Tasks.Task.Run(async () =>
+                    {
+                        string status = await PluginLicenseInfo.QueryStatusAsync(keySnap);
+                        MacroBase.Print(status);
+                    });
+            }
+
+            bool ads = ADS_Button();
+            bool gunfire = Gunfire_Button();
+            var gates = base.MainGate.GateBaseList;
+            int gc = gates.Count;
+
+            ApplyProSettings(gates, gc);
+
+            if (gc > 1 && gates[1].Enable) Macro0_HairTrigger();
+            if (gc > 2 && gates[2].Enable) Macro1_AutoSprint(ads, gunfire);
+            if (gc > 4 && gates[4].Enable) Macro3_RapidFire(gunfire);
+            if (gc > 5 && gates[5].Enable) MacroSpam_RapidSpam(ads, gunfire);
+            if (gc > 6 && gates[6].Enable) MacroStabilizer(ads, gunfire);
+            if (gc > 3 && gates[3].Enable) Macro2_YAxisAntiRecoilPRO(gunfire, ads);
+            if (gc > 7 && gates[7].Enable) Macro5_ColorAimAssistPRO(ads, gunfire);
+            if (gc > 11 && gates[11].Enable) Macro9_AimPattern(ads, gunfire);
+
+            MacroLog_Features(ads, gunfire, gc, gates);
+        }
+
+        private void ApplyProSettings(dynamic gates, int gc)
+        {
+            if (gc > 7 && gates[7].Enable)
+            {
+                _colorAimEngine.Activation = viewmodel.ProColorAimActivationSelectedItem;
+                _colorAimEngine.Preset = viewmodel.ProColorAimPresetSelectedItem;
+                _colorAimEngine.LockStrength = viewmodel.ProLockStrength;
+                _colorAimEngine.DetectionQuality = (int)viewmodel.ProDetectionQuality;
+                _colorAimEngine.CoastFrames = (int)viewmodel.ProDetectionQuality * 2;
+                _colorAimEngine.HueTolerance = 0.0;
+                _colorAimEngine.HueTightened = 0.0;
+                double t = viewmodel.ProTrackingSpeed / 100.0;
+                _colorAimEngine.AnchorUpdateSpeed = 0.02 + t * 0.38;
+                _colorAimEngine.LockSpeed = viewmodel.ProTrackingSpeed;
+                _colorAimEngine.DeadZonePx = viewmodel.ProDeadZonePx;
+                _colorAimEngine.HorizClampFactor = viewmodel.ProHorizClampFactor;
+                _colorAimEngine.VertBiasTopFraction = viewmodel.ProVertBiasTop;
+                _colorAimEngine.CentroidBlend = viewmodel.ProCentroidBlend;
+
+                if (TryParseHex(viewmodel.ProHexColorTarget, out int hr, out int hg, out int hb))
+                {
+                    _colorAimEngine.HexTargetR = hr;
+                    _colorAimEngine.HexTargetG = hg;
+                    _colorAimEngine.HexTargetB = hb;
+                }
+                if (viewmodel.ProFovOverlayEnabled)
+                    System.Windows.Application.Current?.Dispatcher.InvokeAsync(
+                        () => RefreshFovOverlay());
+            }
+            if (gc > 8 && gates[8].Enable)
+                _colorAimEngine.AnchorUpdateSpeed = viewmodel.ProAimAlpha * 0.20;
+            if (gc > 9 && gates[9].Enable)
+                _colorAimEngine.DeadZonePx = viewmodel.ProMagnetRadius * 0.3;
+            if (gc > 10 && gates[10].Enable)
+            {
+                _recoilEngine.GlobalMultiplier = viewmodel.ProRecoilGlobal;
+                _recoilEngine.ADSMultiplier = viewmodel.ProRecoilADS;
+                _recoilEngine.HipfireMultiplier = viewmodel.ProRecoilHipfire;
+                _recoilEngine.SmoothAlpha = viewmodel.ProRecoilSmooth;
+                _recoilEngine.DynamicRampRate = viewmodel.ProRecoilRampRate;
+                _recoilEngine.DynamicMax = viewmodel.ProRecoilDynamicMax;
+                _recoilEngine.WindDownRate = viewmodel.ProRecoilWindDown;
+                _recoilEngine.EarlyBoostStrength = viewmodel.ProRecoilEarlyBoost;
+                _recoilEngine.EarlyBoostShots = (int)viewmodel.ProRecoilEarlyShots;
+                _recoilEngine.HorizCompensation = viewmodel.ProRecoilHorizComp;
+                _recoilEngine.BurstResetMs = (int)viewmodel.ProRecoilBurstResetMs;
+            }
+            if (gc > 12 && gates[12].Enable)
+            {
+                _colorAimEngine.Activation = viewmodel.ProActivationModeSelectedItem switch
+                {
+                    ActivationMode.ADS => ColorAimActivation.ADSOnly,
+                    ActivationMode.ADSPlusFire => ColorAimActivation.ADSPlusFire,
+                    ActivationMode.Fire => ColorAimActivation.FireOnly,
+                    _ => ColorAimActivation.Always,
+                };
+                _activationEngine.TimedDurationMs = (int)viewmodel.ProTimedDurationMs;
+            }
+
+            _stabilizerEngine.Mode = viewmodel.StabilizerModeSelectedItem;
+            _stabilizerEngine.Strength = viewmodel.StabilizerStrength;
+            _stabilizerEngine.Speed = viewmodel.StabilizerSpeed;
+            if (gc > 6 && gates[6].Enable)
+            {
+                var sg = gates[6].GateBaseList;
+                _stabilizerEngine.OnlyADS = sg.Count < 1 || sg[0].Enable;
+                _stabilizerEngine.OnlyFire = sg.Count >= 2 && sg[1].Enable;
+            }
+
+            _hairTriggerEngine.ActivationThreshold = (byte)Math.Clamp(viewmodel.HairTriggerThreshold, 1, 254);
+            _hairTriggerEngine.Amplification = viewmodel.HairTriggerAmplification;
+            if (gc > 1 && gates[1].Enable)
+            {
+                var sg = gates[1].GateBaseList;
+                _hairTriggerEngine.ProgressiveFill = sg.Count < 1 || sg[0].Enable;
+            }
+
+            _rapidSpamEngine.ActivationButton = viewmodel.SpamActivationSelectedItem;
+            _rapidSpamEngine.TargetButton = viewmodel.SpamTargetSelectedItem;
+            _rapidSpamEngine.PressMs = (int)viewmodel.SpamPressMs;
+            _rapidSpamEngine.ReleaseMs = (int)viewmodel.SpamReleaseMs;
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // SECTION 3: BUTTON HELPERS
+        // ════════════════════════════════════════════════════════════════════════
+
+        private bool ADS_Button() =>
+            viewmodel.ADSComboBoxSelectedItem == ADS.L2
+                ? MacroBase.RealDS4.L2 > 0 : MacroBase.RealDS4.L1;
+
+        private bool Gunfire_Button() =>
+            viewmodel.GunfireComboBoxSelectedItem == Gunfire.R2
+                ? MacroBase.RealDS4.R2 > 0 : MacroBase.RealDS4.R1;
+
+        private bool ReadButton(YYSwapButton btn)
+        {
+            switch (btn)
+            {
+                case YYSwapButton.Triangle: return MacroBase.RealDS4.Triangle;
+                case YYSwapButton.Cross: return MacroBase.RealDS4.Cross;
+                case YYSwapButton.Square: return MacroBase.RealDS4.Square;
+                case YYSwapButton.Circle: return MacroBase.RealDS4.Circle;
+                case YYSwapButton.L1: return MacroBase.RealDS4.L1;
+                case YYSwapButton.R1: return MacroBase.RealDS4.R1;
+                case YYSwapButton.L2: return MacroBase.RealDS4.L2 > 0;
+                case YYSwapButton.R2: return MacroBase.RealDS4.R2 > 0;
+                case YYSwapButton.L3: return MacroBase.RealDS4.L3;
+                case YYSwapButton.R3: return MacroBase.RealDS4.R3;
+                case YYSwapButton.Options: return MacroBase.RealDS4.Options;
+                case YYSwapButton.Share: return MacroBase.RealDS4.Share;
+                case YYSwapButton.TouchPad: return MacroBase.RealDS4.TouchButton;
+                default: return false;
+            }
+        }
+
+        private void WriteButton(YYSwapButton btn, bool value)
+        {
+            switch (btn)
+            {
+                case YYSwapButton.Triangle: MacroBase.VirtualDS4.Triangle = value; break;
+                case YYSwapButton.Cross: MacroBase.VirtualDS4.Cross = value; break;
+                case YYSwapButton.Square: MacroBase.VirtualDS4.Square = value; break;
+                case YYSwapButton.Circle: MacroBase.VirtualDS4.Circle = value; break;
+                case YYSwapButton.L1: MacroBase.VirtualDS4.L1 = value; break;
+                case YYSwapButton.R1: MacroBase.VirtualDS4.R1 = value; break;
+                case YYSwapButton.L2: MacroBase.VirtualDS4.L2 = value ? byte.MaxValue : (byte)0; break;
+                case YYSwapButton.R2: MacroBase.VirtualDS4.R2 = value ? byte.MaxValue : (byte)0; break;
+                case YYSwapButton.L3: MacroBase.VirtualDS4.L3 = value; break;
+                case YYSwapButton.R3: MacroBase.VirtualDS4.R3 = value; break;
+                case YYSwapButton.Options: MacroBase.VirtualDS4.Options = value; break;
+                case YYSwapButton.Share: MacroBase.VirtualDS4.Share = value; break;
+                case YYSwapButton.TouchPad: MacroBase.VirtualDS4.TouchButton = value; break;
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // SECTION 4: MACROS
+        // ════════════════════════════════════════════════════════════════════════
+
+        private void Macro0_HairTrigger()
+        {
+            if (MacroBase.RealDS4.L2 > 0)
+                MacroBase.VirtualDS4.L2 = _hairTriggerEngine.Process(MacroBase.RealDS4.L2);
+            if (MacroBase.RealDS4.R2 > 0)
+                MacroBase.VirtualDS4.R2 = _hairTriggerEngine.Process(MacroBase.RealDS4.R2);
+        }
+
+        private bool LStickPush(bool ads, bool gunfire)
+        {
+            int lx = MacroBase.RealDS4.LX - 128, ly = MacroBase.RealDS4.LY - 128;
+            return MacroBase.RealDS4.LY < 128 && !MacroBase.RealDS4.L1
+                && !ads && !gunfire && lx * lx + ly * ly > 64 * 64;
+        }
+
+        private void Macro1_AutoSprint(bool ads, bool gunfire)
+        {
+            Macro1_Flow.Start_Condition = LStickPush(ads, gunfire) && CT["AutoSprint"].Elapsed(100);
+            Macro1_Flow.Stop_Condition = MacroBase.RealDS4.L1 || ads || gunfire;
+            Macro1_Flow.Repeat_Condition = false;
+            Macro1_Flow.ExecuteMacro();
+        }
+
+        private void Macro2_YAxisAntiRecoilPRO(bool gunfire, bool ads)
+        {
+            if (Macro2_Flow == null)
+            {
+                Macro2_Flow = new FlowControllerV0("AntiRecoil", null)
+                {
+                    new ActionInfoV0(() =>
+                    {
+                        var gl   = base.MainGate.GateBaseList;
+                        bool inv = gl.Count > 3 && gl[3].GateBaseList.Count > 0
+                                   && gl[3].GateBaseList[0].Enable;
+                        _recoilEngine.InvertY = inv;
+
+                        bool adsN = ADS_Button();
+                        bool gfN  = Gunfire_Button();
+
+                        double sliderStrength = (adsN && gfN)
+                            ? viewmodel.AntiRecoilL2R2Value
+                            : viewmodel.AntiRecoilR2Value;
+
+                        var gates2 = base.MainGate.GateBaseList;
+                        bool proOn = gates2.Count > 10 && gates2[10].Enable;
+                        _recoilEngine.GlobalMultiplier = proOn
+                            ? viewmodel.ProRecoilGlobal : _globalRecoilMultiplier;
+
+                        _recoilEngine.Tick(gfN, adsN, sliderStrength, out int dX, out int dY);
+
+                        MacroBase.VirtualDS4.RY = (byte)Math.Clamp(MacroBase.VirtualDS4.RY + dY, 0, 255);
+                        MacroBase.VirtualDS4.RX = (byte)Math.Clamp(MacroBase.VirtualDS4.RX + dX, 0, 255);
+                    }, 16)
+                };
+            }
+            Macro2_Flow.Start_Condition = gunfire && CT["AntiRecoil"].Elapsed(16);
+            Macro2_Flow.Stop_Condition = !gunfire;
+            Macro2_Flow.Repeat_Condition = true;
+            Macro2_Flow.ExecuteMacro();
+        }
+
+        private void Macro3_RapidFire(bool gunfire)
+        {
+            if (Macro3_Flow == null)
+            {
+                bool useR2 = viewmodel.GunfireComboBoxSelectedItem == Gunfire.R2;
+                var flow = new FlowControllerV0("RapidFire", null);
+                if (useR2)
+                {
+                    flow.Add(new ActionInfoV0(() => { MacroBase.VirtualDS4.R2 = byte.MaxValue; }, 25));
+                    flow.Add(new ActionInfoV0(() => { MacroBase.VirtualDS4.R2 = 0; }, () => (int)viewmodel.RapidFireValue));
+                }
+                else
+                {
+                    flow.Add(new ActionInfoV0(() => { MacroBase.VirtualDS4.R1 = true; }, 25));
+                    flow.Add(new ActionInfoV0(() => { MacroBase.VirtualDS4.R1 = false; }, () => (int)viewmodel.RapidFireValue));
+                }
+                Macro3_Flow = flow;
+            }
+            bool can = gunfire && !MacroBase.RealDS4.R1;
+            Macro3_Flow.Start_Condition = can;
+            Macro3_Flow.Stop_Condition = !can;
+            Macro3_Flow.Repeat_Condition = true;
+            Macro3_Flow.ExecuteMacro();
+        }
+
+        private bool _spamPrevHeld = false;
+
+        private void MacroSpam_RapidSpam(bool ads, bool gunfire)
+        {
+            bool held = ReadButton(viewmodel.SpamActivationSelectedItem);
+            if (!held) { if (_spamPrevHeld) _rapidSpamEngine.Reset(); _spamPrevHeld = false; return; }
+            _spamPrevHeld = true;
+            _rapidSpamEngine.Tick(out bool press);
+            WriteButton(viewmodel.SpamTargetSelectedItem, press);
+        }
+
+        private void MacroStabilizer(bool ads, bool gunfire)
+        {
+            if (Macro_StabFlow == null)
+            {
+                Macro_StabFlow = new FlowControllerV0("Stabilizer", null)
+                {
+                    new ActionInfoV0(() =>
+                    {
+                        bool adsN = ADS_Button();
+                        bool gfN  = Gunfire_Button();
+                        int  sx   = MacroBase.VirtualDS4.RX - 128;
+                        int  sy   = MacroBase.VirtualDS4.RY - 128;
+                        var (dx, dy) = _stabilizerEngine.Tick(adsN, gfN, sx, sy);
+                        if (dx != 0 || dy != 0)
+                        {
+                            MacroBase.VirtualDS4.RX = (byte)Math.Clamp(MacroBase.VirtualDS4.RX + dx, 0, 255);
+                            MacroBase.VirtualDS4.RY = (byte)Math.Clamp(MacroBase.VirtualDS4.RY + dy, 0, 255);
+                        }
+                    }, 16)
+                };
+            }
+
+            bool active = viewmodel.StabilizerModeSelectedItem != StabilizerMode.Off;
+            Macro_StabFlow.Start_Condition = active && CT["Stabilizer"].Elapsed(16);
+            Macro_StabFlow.Stop_Condition = !active;
+            Macro_StabFlow.Repeat_Condition = true;
+            Macro_StabFlow.ExecuteMacro();
+        }
+
+        private const double _globalAimMultiplier = 1.0;
+        private const double _globalRecoilMultiplier = 1.0;
+
+        private void Macro5_ColorAimAssistPRO(bool ads, bool gunfire)
+        {
+            if (Macro5_Flow == null)
+            {
+                _colorAimEngine.Preset = ColorAimPreset.HexInput;
+                _colorAimEngine.Activation = ColorAimActivation.ADSOnly;
+                _colorAimEngine.LockStrength = 38.0;
+                _colorAimEngine.LockSpeed = 75.0;
+                _colorAimEngine.DetectionQuality = 3;
+                _colorAimEngine.CoastFrames = 6;
+                _colorAimEngine.HueTolerance = 0.0;
+                _colorAimEngine.HueTightened = 0.0;
+                _colorAimEngine.AnchorUpdateSpeed = 0.15;
+                _colorAimEngine.DeadZonePx = 4.0;
+                _colorAimEngine.HexTargetR = 255;
+                _colorAimEngine.HexTargetG = 0;
+                _colorAimEngine.HexTargetB = 255;
+                _colorAimEngine.HorizClampFactor = 0.55;
+                _colorAimEngine.VertBiasTopFraction = 0.45;
+                _colorAimEngine.CentroidBlend = 0.80;
+
+                Macro5_Flow = new FlowControllerV0("ColorAim", null)
+                {
+                    new ActionInfoV0(() =>
+                    {
+                        try
+                        {
+                            int  rad = viewmodel.FovRadiusPx;
+                            byte rx  = MacroBase.VirtualDS4.RX;
+                            byte ry  = MacroBase.VirtualDS4.RY;
+                            _colorAimEngine.Tick(
+                                ADS_Button(), Gunfire_Button(), rad,
+                                (int)viewmodel.ColorAimRedValue,
+                                (int)viewmodel.ColorAimGreenValue,
+                                (int)viewmodel.ColorAimBlueValue,
+                                ref rx, ref ry);
+                            MacroBase.VirtualDS4.RX = rx;
+                            MacroBase.VirtualDS4.RY = ry;
+                        }
+                        catch { }
+                    }, 8)
+                };
+            }
+
+            bool active = _activationEngine.IsActive(ActivationMode.ADS, ads, gunfire);
+            Macro5_Flow.Start_Condition = active && CT["ColorAim"].Elapsed(8);
+            Macro5_Flow.Stop_Condition = !active;
+            Macro5_Flow.Repeat_Condition = true;
+            Macro5_Flow.ExecuteMacro();
+        }
+
+        private FlowControllerV0 Macro9_Flow;
+
+        private void Macro9_AimPattern(bool ads, bool gunfire)
+        {
+            if (Macro9_Flow == null)
+                Macro9_Flow = new FlowControllerV0("AimPattern", null)
+                {
+                    new ActionInfoV0(() =>
+                    {
+                        _patternEngine.GetDelta(
+                            viewmodel.ProPatternModeSelectedItem,
+                            viewmodel.ProPatternAmplitude,
+                            viewmodel.ProPatternExtraParam,
+                            out double dx, out double dy);
+                        MacroBase.VirtualDS4.RX = (byte)Math.Clamp(MacroBase.VirtualDS4.RX + (int)Math.Round(dx), 0, 255);
+                        MacroBase.VirtualDS4.RY = (byte)Math.Clamp(MacroBase.VirtualDS4.RY + (int)Math.Round(dy), 0, 255);
+                    }, 16)
+                };
+
+            var gl = base.MainGate.GateBaseList;
+            ActivationMode pm = gl.Count > 11 && gl[11].Enable
+                ? viewmodel.ProPatternActivationModeSelectedItem
+                : ActivationMode.ADS;
+
+            bool active = _activationEngine.IsActive(pm, ads, gunfire);
+            Macro9_Flow.Start_Condition = active && CT["AimPattern"].Elapsed(16);
+            Macro9_Flow.Stop_Condition = !active;
+            Macro9_Flow.Repeat_Condition = true;
+            Macro9_Flow.ExecuteMacro();
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // FEATURE LOGGER
+        // ════════════════════════════════════════════════════════════════════════
+
+        private bool _logHairTrigger, _logSprint, _logAntiRecoil, _logRapidFire;
+        private bool _logSpam, _logStab, _logColorAim, _logSmoother;
+        private bool _logMagnet, _logRecoilEng, _logPattern, _logActMode;
+
+        private void MacroLog_Features(bool ads, bool gunfire, int gc, dynamic gates)
+        {
+            bool adsN = ADS_Button(), gfN = Gunfire_Button();
+
+            void LogOnChange(ref bool prev, bool cur, string msg)
+            { if (cur && !prev) MacroBase.Print(msg); prev = cur; }
+
+            LogOnChange(ref _logHairTrigger,
+                gc > 1 && gates[1].Enable && (MacroBase.RealDS4.L2 > 0 || MacroBase.RealDS4.R2 > 0),
+                $"[EasyMo] HairTrigger v2 » threshold={viewmodel.HairTriggerThreshold:F0}  amp={viewmodel.HairTriggerAmplification:F1}x");
+
+            LogOnChange(ref _logSprint,
+                gc > 2 && gates[2].Enable && LStickPush(ads, gunfire),
+                "[EasyMo] AutoSprint » sprinting");
+
+            LogOnChange(ref _logAntiRecoil,
+                gc > 3 && gates[3].Enable && gfN,
+                $"[EasyMo] AntiRecoil v2 » Fire={viewmodel.AntiRecoilR2Value:F0}  ADS+Fire={viewmodel.AntiRecoilL2R2Value:F0}");
+
+            LogOnChange(ref _logRapidFire,
+                gc > 4 && gates[4].Enable && gfN,
+                $"[EasyMo] RapidFire » {viewmodel.RapidFireValue:F0} ms");
+
+            LogOnChange(ref _logSpam,
+                gc > 5 && gates[5].Enable && ReadButton(viewmodel.SpamActivationSelectedItem),
+                $"[EasyMo] Rapid Spam » {viewmodel.SpamActivationSelectedItem}→{viewmodel.SpamTargetSelectedItem}");
+
+            LogOnChange(ref _logStab,
+                gc > 6 && gates[6].Enable && viewmodel.StabilizerModeSelectedItem != StabilizerMode.Off && adsN,
+                $"[EasyMo] Stabilizer » mode={viewmodel.StabilizerModeSelectedItem}  str={viewmodel.StabilizerStrength:F2}");
+
+            LogOnChange(ref _logColorAim,
+                gc > 7 && gates[7].Enable && adsN,
+                $"[EasyMo] Color Aim v6 » preset={viewmodel.ProColorAimPresetSelectedItem}  FOV={viewmodel.FovRadiusPx}px  str={viewmodel.ProLockStrength:F0}%");
+
+            LogOnChange(ref _logSmoother,
+                gc > 8 && gates[8].Enable && adsN,
+                $"[EasyMo] Smoother » α={viewmodel.ProAimAlpha:F2}  β={viewmodel.ProAimBeta:F2}");
+
+            LogOnChange(ref _logMagnet,
+                gc > 9 && gates[9].Enable && adsN,
+                $"[EasyMo] Sticky Aim » magnet={viewmodel.ProMagnetStrength:F2}  r={viewmodel.ProMagnetRadius:F0}px");
+
+            LogOnChange(ref _logRecoilEng,
+                gc > 10 && gates[10].Enable && gfN,
+                $"[EasyMo] Recoil Engine » global={viewmodel.ProRecoilGlobal:F2}  ADS={viewmodel.ProRecoilADS:F2}");
+
+            LogOnChange(ref _logPattern,
+                gc > 11 && gates[11].Enable && _activationEngine.IsActive(
+                    viewmodel.ProPatternActivationModeSelectedItem, adsN, gfN),
+                $"[EasyMo] Aim Pattern » mode={viewmodel.ProPatternModeSelectedItem}  amp={viewmodel.ProPatternAmplitude:F2}");
+
+            LogOnChange(ref _logActMode,
+                gc > 12 && gates[12].Enable,
+                $"[EasyMo] Override Mode » {viewmodel.ProActivationModeSelectedItem}");
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // SECTION 5: CONSTRUCTOR
+        // ════════════════════════════════════════════════════════════════════════
+
+        public Game_EasyAimImproved()
+        {
+            var f = new FlowControllerV0("AutoSprint", null);
+            f.Add(new ActionInfoV0(() => { MacroBase.VirtualDS4.L3 = true; }, 100));
+            Macro1_Flow = f;
+
+            InnerViewModel.OnSettingChanged += msg => MacroBase.Print(msg);
+
+            // ── Auto-log license status 3 s after plugin loads ────────────────
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(3000);
+                string key = PluginLicenseInfo.LoadKey();
+                if (!string.IsNullOrEmpty(key))
+                {
+                    viewmodel.PluginLicenseKey = key;   // pre-fill the text box
+                    string status = await PluginLicenseInfo.QueryStatusAsync(key);
+                    MacroBase.Print(status);
+                }
+                else
+                {
+                    MacroBase.Print("[License] No saved key — open System Panel and enter your license key.");
+                }
+            });
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // SECTION 6: FIELDS
+        // ════════════════════════════════════════════════════════════════════════
+
+        private static readonly InnerViewModel viewmodel = new InnerViewModel();
+        private readonly CooldownTimer CT = new CooldownTimer();
+
+        private readonly ColorAimEngine _colorAimEngine = new ColorAimEngine();
+        private readonly RecoilEngine _recoilEngine = new RecoilEngine();
+        private readonly PatternEngine _patternEngine = new PatternEngine();
+        private readonly ActivationEngine _activationEngine = new ActivationEngine();
+        private readonly HairTriggerEngine _hairTriggerEngine = new HairTriggerEngine();
+        private readonly RapidSpamEngine _rapidSpamEngine = new RapidSpamEngine();
+        private readonly AimStabilizerEngine _stabilizerEngine = new AimStabilizerEngine();
+
+        private FlowControllerV0 Macro1_Flow;
+        private FlowControllerV0 Macro2_Flow;
+        private FlowControllerV0 Macro3_Flow;
+        private FlowControllerV0 Macro5_Flow;
+        private FlowControllerV0 Macro_StabFlow;
+
+        // ── License periodic log ──────────────────────────────────────────────
+        private long _lastLicenseLogTick = 0;
+        private const long LicenseLogMs = 5 * 60 * 1000; // 5 minutes
+
+        private int lastAimX, lastAimY;
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // VIEWMODEL
+    // ════════════════════════════════════════════════════════════════════════════
+
+    internal class InnerViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public static event Action<string> OnSettingChanged;
+
+        private static readonly Dictionary<string, string> _propLabel = new Dictionary<string, string>
+        {
+            [nameof(AntiRecoilR2Value)] = "AntiRecoil › Hipfire strength",
+            [nameof(AntiRecoilL2R2Value)] = "AntiRecoil › ADS+Fire strength",
+            [nameof(RapidFireValue)] = "RapidFire › interval ms",
+            [nameof(HairTriggerThreshold)] = "HairTrigger › activation point",
+            [nameof(HairTriggerProgressive)] = "HairTrigger › progressive fill",
+            [nameof(HairTriggerAmplification)] = "HairTrigger › amplification",
+            [nameof(SpamActivationSelectedItem)] = "Spam › activation button",
+            [nameof(SpamTargetSelectedItem)] = "Spam › target button",
+            [nameof(SpamPressMs)] = "Spam › press duration ms",
+            [nameof(SpamReleaseMs)] = "Spam › release gap ms",
+            [nameof(StabilizerModeSelectedItem)] = "Stabilizer › mode",
+            [nameof(StabilizerStrength)] = "Stabilizer › strength",
+            [nameof(StabilizerSpeed)] = "Stabilizer › speed",
+            [nameof(StabilizerOnlyADS)] = "Stabilizer › only while ADS",
+            [nameof(StabilizerOnlyFire)] = "Stabilizer › only while firing",
+            [nameof(ColorAimStrengthValue)] = "Color Aim › strength",
+            [nameof(ColorAimRadiusValue)] = "Color Aim › radius",
+            [nameof(ColorAimRedValue)] = "Color Aim › custom R",
+            [nameof(ColorAimGreenValue)] = "Color Aim › custom G",
+            [nameof(ColorAimBlueValue)] = "Color Aim › custom B",
+            [nameof(ColorAimToleranceValue)] = "Color Aim › tolerance",
+            [nameof(ProHexColorTarget)] = "Color Aim › hex target color",
+            [nameof(ProLockStrength)] = "Color Aim › lock strength %",
+            [nameof(ProTrackingSpeed)] = "Color Aim › tracking speed",
+            [nameof(ProDetectionQuality)] = "Color Aim › detection quality",
+            [nameof(ProDeadZonePx)] = "Color Aim › dead zone px",
+            [nameof(ProCoastFrames)] = "Color Aim › coast frames",
+            [nameof(ProHueTolerance)] = "Color Aim › hue tolerance",
+            [nameof(ProColorAimActivationSelectedItem)] = "Color Aim › activation mode",
+            [nameof(ProColorAimPresetSelectedItem)] = "Color Aim › color preset",
+            [nameof(ProHorizClampFactor)] = "Color Aim › horiz clamp factor",
+            [nameof(ProVertBiasTop)] = "Color Aim › vert bias top",
+            [nameof(ProCentroidBlend)] = "Color Aim › centroid blend",
+            [nameof(ProFovSelectedItem)] = "FOV › zone",
+            [nameof(ProFovOverlayEnabled)] = "FOV Overlay › enabled",
+            [nameof(ProFovOverlayHexColor)] = "FOV Overlay › ring color",
+            [nameof(ProFovOverlayThickness)] = "FOV Overlay › thickness px",
+            [nameof(ProFovOverlayOpacity)] = "FOV Overlay › opacity",
+            [nameof(ProAimAlpha)] = "Smoother › alpha (position)",
+            [nameof(ProAimBeta)] = "Smoother › beta (velocity)",
+            [nameof(ProAimDecay)] = "Smoother › decay",
+            [nameof(ProAimPredict)] = "Smoother › stick lead",
+            [nameof(ProAimPredictFrames)] = "Smoother › predict frames",
+            [nameof(ProMagnetStrength)] = "Sticky Aim › magnet strength",
+            [nameof(ProMagnetRadius)] = "Sticky Aim › magnet radius px",
+            [nameof(ProFrictionZone)] = "Sticky Aim › friction zone",
+            [nameof(ProRecoilGlobal)] = "Recoil Engine › global multiplier",
+            [nameof(ProRecoilADS)] = "Recoil Engine › ADS multiplier",
+            [nameof(ProRecoilHipfire)] = "Recoil Engine › hipfire multiplier",
+            [nameof(ProRecoilSmooth)] = "Recoil Engine › smoothing alpha",
+            [nameof(ProRecoilRampRate)] = "Recoil Engine › ramp rate",
+            [nameof(ProRecoilDynamicMax)] = "Recoil Engine › dynamic max",
+            [nameof(ProRecoilWindDown)] = "Recoil Engine › wind-down rate",
+            [nameof(ProRecoilEarlyBoost)] = "Recoil Engine › first-shot boost",
+            [nameof(ProRecoilEarlyShots)] = "Recoil Engine › boost shot count",
+            [nameof(ProRecoilHorizComp)] = "Recoil Engine › horiz compensation",
+            [nameof(ProRecoilBurstResetMs)] = "Recoil Engine › burst reset ms",
+            [nameof(ProPatternModeSelectedItem)] = "Aim Pattern › mode",
+            [nameof(ProPatternAmplitude)] = "Aim Pattern › amplitude",
+            [nameof(ProPatternExtraParam)] = "Aim Pattern › extra param",
+            [nameof(ProPatternActivationModeSelectedItem)] = "Aim Pattern › activation",
+            [nameof(ProActivationModeSelectedItem)] = "Override Mode › trigger",
+            [nameof(ProTimedDurationMs)] = "Override Mode › timed duration ms",
+            [nameof(ResolutionSelectedItem)] = "Display › resolution",
+            [nameof(RefreshRateSelectedItem)] = "Display › refresh rate",
+            [nameof(AppliedResolutionWidth)] = "Display › applied width",
+            [nameof(AppliedResolutionHeight)] = "Display › applied height",
+            [nameof(AppliedRefreshRate)] = "Display › applied Hz",
+            [nameof(ADSComboBoxSelectedItem)] = "Controller › ADS button",
+            [nameof(GunfireComboBoxSelectedItem)] = "Controller › Gunfire button",
+        };
+
+        protected void Set<T>(ref T field, T value, [CallerMemberName] string name = null)
+        {
+            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(field, value)) return;
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+            string label = (_propLabel.TryGetValue(name ?? "", out string lbl)) ? lbl : name;
+            string valueStr = value is bool b ? (b ? "ON" : "OFF")
+                            : value is double d ? d.ToString("G4")
+                            : value?.ToString() ?? "null";
+            OnSettingChanged?.Invoke($"[EasyMo] {label} → {valueStr}");
+        }
+
+        // ── Controller ────────────────────────────────────────────────────────
+        public ObservableCollection<ADS> ADSComboBoxItemsSource { get; set; }
+            = new ObservableCollection<ADS> { ADS.L1, ADS.L2 };
+        private ADS _adsSelected = ADS.L2;
+        public ADS ADSComboBoxSelectedItem { get => _adsSelected; set => Set(ref _adsSelected, value); }
+
+        public ObservableCollection<Gunfire> GunfireComboBoxItemsSource { get; set; }
+            = new ObservableCollection<Gunfire> { Gunfire.R1, Gunfire.R2 };
+        private Gunfire _gfSelected = Gunfire.R2;
+        public Gunfire GunfireComboBoxSelectedItem { get => _gfSelected; set => Set(ref _gfSelected, value); }
+
+        // ── Basic ─────────────────────────────────────────────────────────────
+        private double _arR2 = 20; public double AntiRecoilR2Value { get => _arR2; set => Set(ref _arR2, value); }
+        private double _arL2 = 66; public double AntiRecoilL2R2Value { get => _arL2; set => Set(ref _arL2, value); }
+        private double _rf = 60; public double RapidFireValue { get => _rf; set => Set(ref _rf, value); }
+
+        // ── HairTrigger v2 ────────────────────────────────────────────────────
+        private double _htThresh = 30.0; public double HairTriggerThreshold { get => _htThresh; set => Set(ref _htThresh, value); }
+        private bool _htProg = true; public bool HairTriggerProgressive { get => _htProg; set => Set(ref _htProg, value); }
+        private double _htAmp = 1.5; public double HairTriggerAmplification { get => _htAmp; set => Set(ref _htAmp, value); }
+
+        // ── Rapid Spam ────────────────────────────────────────────────────────
+        public ObservableCollection<YYSwapButton> SpamActivationItemsSource { get; set; }
+            = new ObservableCollection<YYSwapButton>
+            { YYSwapButton.Triangle, YYSwapButton.Cross, YYSwapButton.Square, YYSwapButton.Circle,
+              YYSwapButton.L1, YYSwapButton.R1, YYSwapButton.L2, YYSwapButton.R2,
+              YYSwapButton.L3, YYSwapButton.R3, YYSwapButton.Options, YYSwapButton.Share, YYSwapButton.TouchPad };
+        private YYSwapButton _spamAct = YYSwapButton.Triangle;
+        public YYSwapButton SpamActivationSelectedItem { get => _spamAct; set => Set(ref _spamAct, value); }
+
+        public ObservableCollection<YYSwapButton> SpamTargetItemsSource { get; set; }
+            = new ObservableCollection<YYSwapButton>
+            { YYSwapButton.Triangle, YYSwapButton.Cross, YYSwapButton.Square, YYSwapButton.Circle,
+              YYSwapButton.L1, YYSwapButton.R1, YYSwapButton.L2, YYSwapButton.R2,
+              YYSwapButton.L3, YYSwapButton.R3, YYSwapButton.Options, YYSwapButton.Share, YYSwapButton.TouchPad };
+        private YYSwapButton _spamTgt = YYSwapButton.Triangle;
+        public YYSwapButton SpamTargetSelectedItem { get => _spamTgt; set => Set(ref _spamTgt, value); }
+
+        private double _spamPress = 40; public double SpamPressMs { get => _spamPress; set => Set(ref _spamPress, value); }
+        private double _spamRelease = 40; public double SpamReleaseMs { get => _spamRelease; set => Set(ref _spamRelease, value); }
+
+        // ── Aim Stabilizer ────────────────────────────────────────────────────
+        public ObservableCollection<StabilizerMode> StabilizerModeItemsSource { get; set; }
+            = new ObservableCollection<StabilizerMode>
+            { StabilizerMode.Off, StabilizerMode.MicroCorrect, StabilizerMode.Figure8,
+              StabilizerMode.Breath, StabilizerMode.AntiDrift, StabilizerMode.Orbit };
+        private StabilizerMode _stabMode = StabilizerMode.Orbit;
+        public StabilizerMode StabilizerModeSelectedItem { get => _stabMode; set => Set(ref _stabMode, value); }
+        private double _stabStr = 0.08; public double StabilizerStrength { get => _stabStr; set => Set(ref _stabStr, value); }
+        private double _stabSpd = 1.0; public double StabilizerSpeed { get => _stabSpd; set => Set(ref _stabSpd, value); }
+        private bool _stabADS = true; public bool StabilizerOnlyADS { get => _stabADS; set => Set(ref _stabADS, value); }
+        private bool _stabFire = false; public bool StabilizerOnlyFire { get => _stabFire; set => Set(ref _stabFire, value); }
+
+        // ── Color Aim ─────────────────────────────────────────────────────────
+        private double _caStr = 62; public double ColorAimStrengthValue { get => _caStr; set => Set(ref _caStr, value); }
+        private double _caRad = 20; public double ColorAimRadiusValue { get => _caRad; set => Set(ref _caRad, value); }
+        private double _caR = 255; public double ColorAimRedValue { get => _caR; set => Set(ref _caR, value); }
+        private double _caG = 80; public double ColorAimGreenValue { get => _caG; set => Set(ref _caG, value); }
+        private double _caB = 80; public double ColorAimBlueValue { get => _caB; set => Set(ref _caB, value); }
+        private double _caTol = 28; public double ColorAimToleranceValue { get => _caTol; set => Set(ref _caTol, value); }
+
+        private string _hexColor = "FF00FF";
+        public string ProHexColorTarget { get => _hexColor; set => Set(ref _hexColor, value); }
+
+        // ── FOV zone ─────────────────────────────────────────────────────────
+        public ObservableCollection<string> ProFovItemsSource { get; set; }
+            = new ObservableCollection<string>
+            {
+                "Micro  (15 px)  — ultra-precise, near crosshair only",
+                "Narrow (25 px)  — tight tracking, low false-positives",
+                "Normal (40 px)  — balanced",
+                "Wide   (60 px)  — catches faster-moving targets",
+                "Max    (80 px)  — widest catch zone",
+            };
+        private string _fov = "Max    (80 px)  — widest catch zone";
+        public string ProFovSelectedItem { get => _fov; set => Set(ref _fov, value); }
+
+        public int FovRadiusPx
+        {
+            get
+            {
+                if (_fov.StartsWith("Micro")) return 15;
+                if (_fov.StartsWith("Narrow")) return 25;
+                if (_fov.StartsWith("Wide")) return 60;
+                if (_fov.StartsWith("Max")) return 80;
+                return 40;
+            }
+        }
+
+        // ── v6 Color Aim simplified ───────────────────────────────────────────
+        private double _lockStrength = 38.0; public double ProLockStrength { get => _lockStrength; set => Set(ref _lockStrength, value); }
+        private double _trackSpeed = 75.0; public double ProTrackingSpeed { get => _trackSpeed; set => Set(ref _trackSpeed, value); }
+        private double _detQuality = 3.0; public double ProDetectionQuality { get => _detQuality; set => Set(ref _detQuality, value); }
+        private double _deadZonePx = 4.0; public double ProDeadZonePx { get => _deadZonePx; set => Set(ref _deadZonePx, value); }
+        private double _coastFrames = 6; public double ProCoastFrames { get => _coastFrames; set => Set(ref _coastFrames, value); }
+        private double _hueTol = 0.0; public double ProHueTolerance { get => _hueTol; set => Set(ref _hueTol, value); }
+
+        // ── NEW v6: Anti-drift controls ───────────────────────────────────────
+        private double _horizClamp = 0.55; public double ProHorizClampFactor { get => _horizClamp; set => Set(ref _horizClamp, value); }
+        private double _vertBias = 0.45; public double ProVertBiasTop { get => _vertBias; set => Set(ref _vertBias, value); }
+        private double _centBlend = 0.80; public double ProCentroidBlend { get => _centBlend; set => Set(ref _centBlend, value); }
+
+        // Legacy kept for .eaprof compat
+        private double _anchorStability = 12.0; public double ProAnchorStability { get => _anchorStability; set => Set(ref _anchorStability, value); }
+        private double _lockSpeed = 60.0; public double ProLockSpeed { get => _lockSpeed; set => Set(ref _lockSpeed, value); }
+
+        // ── FOV Overlay ───────────────────────────────────────────────────────
+        private bool _fovOvEn = false; public bool ProFovOverlayEnabled { get => _fovOvEn; set => Set(ref _fovOvEn, value); }
+        private string _fovOvColor = "FF00FF"; public string ProFovOverlayHexColor { get => _fovOvColor; set => Set(ref _fovOvColor, value); }
+        private double _fovOvThk = 1.5; public double ProFovOverlayThickness { get => _fovOvThk; set => Set(ref _fovOvThk, value); }
+        private double _fovOvOpa = 200; public double ProFovOverlayOpacity { get => _fovOvOpa; set => Set(ref _fovOvOpa, value); }
+
+        // ── Color Aim Activation + Preset ─────────────────────────────────────
+        public ObservableCollection<ColorAimActivation> ProColorAimActivationItemsSource { get; set; }
+            = new ObservableCollection<ColorAimActivation>
+            { ColorAimActivation.ADSOnly, ColorAimActivation.ADSPlusFire,
+              ColorAimActivation.FireOnly, ColorAimActivation.Always };
+        private ColorAimActivation _caAct = ColorAimActivation.ADSOnly;
+        public ColorAimActivation ProColorAimActivationSelectedItem { get => _caAct; set => Set(ref _caAct, value); }
+
+        public ObservableCollection<ColorAimPreset> ProColorAimPresetItemsSource { get; set; }
+            = new ObservableCollection<ColorAimPreset>
+            {
+                ColorAimPreset.HexInput, ColorAimPreset.Pink,   ColorAimPreset.Red,
+                ColorAimPreset.Cyan,     ColorAimPreset.Yellow, ColorAimPreset.Orange,
+                ColorAimPreset.Purple,   ColorAimPreset.Green,  ColorAimPreset.White,
+                ColorAimPreset.Custom,   ColorAimPreset.HeroRivals, ColorAimPreset.Fortnite,
+                ColorAimPreset.Apex,     ColorAimPreset.Warzone, ColorAimPreset.COD, ColorAimPreset.Black,
+            };
+        private ColorAimPreset _caPreset = ColorAimPreset.HexInput;
+        public ColorAimPreset ProColorAimPresetSelectedItem { get => _caPreset; set => Set(ref _caPreset, value); }
+
+        // ── Smoother ──────────────────────────────────────────────────────────
+        private double _aimAlpha = 0.42; public double ProAimAlpha { get => _aimAlpha; set => Set(ref _aimAlpha, value); }
+        private double _aimBeta = 0.15; public double ProAimBeta { get => _aimBeta; set => Set(ref _aimBeta, value); }
+        private double _aimDecay = 0.55; public double ProAimDecay { get => _aimDecay; set => Set(ref _aimDecay, value); }
+        private double _aimPred = 0.60; public double ProAimPredict { get => _aimPred; set => Set(ref _aimPred, value); }
+        private double _aimPredF = 1.30; public double ProAimPredictFrames { get => _aimPredF; set => Set(ref _aimPredF, value); }
+
+        // ── Magnet ────────────────────────────────────────────────────────────
+        private double _magStr = 1.80; public double ProMagnetStrength { get => _magStr; set => Set(ref _magStr, value); }
+        private double _magRad = 10.0; public double ProMagnetRadius { get => _magRad; set => Set(ref _magRad, value); }
+        private double _friction = 0.35; public double ProFrictionZone { get => _friction; set => Set(ref _friction, value); }
+
+        // ── Recoil Engine ─────────────────────────────────────────────────────
+        private double _rGlobal = 1.00; public double ProRecoilGlobal { get => _rGlobal; set => Set(ref _rGlobal, value); }
+        private double _rADS = 0.90; public double ProRecoilADS { get => _rADS; set => Set(ref _rADS, value); }
+        private double _rHip = 0.45; public double ProRecoilHipfire { get => _rHip; set => Set(ref _rHip, value); }
+        private double _rSmooth = 0.32; public double ProRecoilSmooth { get => _rSmooth; set => Set(ref _rSmooth, value); }
+        private double _rRamp = 0.012; public double ProRecoilRampRate { get => _rRamp; set => Set(ref _rRamp, value); }
+        private double _rDynMax = 1.55; public double ProRecoilDynamicMax { get => _rDynMax; set => Set(ref _rDynMax, value); }
+        private double _rWindDown = 0.18; public double ProRecoilWindDown { get => _rWindDown; set => Set(ref _rWindDown, value); }
+        private double _rEarlyBoost = 1.35; public double ProRecoilEarlyBoost { get => _rEarlyBoost; set => Set(ref _rEarlyBoost, value); }
+        private double _rEarlyShots = 5; public double ProRecoilEarlyShots { get => _rEarlyShots; set => Set(ref _rEarlyShots, value); }
+        private double _rHorizComp = 0.70; public double ProRecoilHorizComp { get => _rHorizComp; set => Set(ref _rHorizComp, value); }
+        private double _rBurstReset = 250; public double ProRecoilBurstResetMs { get => _rBurstReset; set => Set(ref _rBurstReset, value); }
+
+        // ── Aim Pattern ───────────────────────────────────────────────────────
+        public ObservableCollection<AimPatternMode> ProPatternModeItemsSource { get; set; }
+            = new ObservableCollection<AimPatternMode>
+            { AimPatternMode.SpiralOut, AimPatternMode.SpiralIn, AimPatternMode.Pulse,
+              AimPatternMode.RapidPulse, AimPatternMode.MicroJitter, AimPatternMode.SnapAim,
+              AimPatternMode.PredictiveAim, AimPatternMode.CircleShake2 };
+        private AimPatternMode _patMode = AimPatternMode.SpiralOut;
+        public AimPatternMode ProPatternModeSelectedItem { get => _patMode; set => Set(ref _patMode, value); }
+        private double _patAmp = 0.18; public double ProPatternAmplitude { get => _patAmp; set => Set(ref _patAmp, value); }
+        private double _patExtra = 20.0; public double ProPatternExtraParam { get => _patExtra; set => Set(ref _patExtra, value); }
+
+        public ObservableCollection<ActivationMode> ProPatternActivationModeItemsSource { get; set; }
+            = new ObservableCollection<ActivationMode>
+            { ActivationMode.ADS, ActivationMode.ADSPlusFire, ActivationMode.Fire,
+              ActivationMode.Always, ActivationMode.Hipfire, ActivationMode.Toggle,
+              ActivationMode.Hold, ActivationMode.DoubleTap, ActivationMode.Timed };
+        private ActivationMode _patActMode = ActivationMode.ADSPlusFire;
+        public ActivationMode ProPatternActivationModeSelectedItem { get => _patActMode; set => Set(ref _patActMode, value); }
+
+        // ── Color Aim Override Mode ───────────────────────────────────────────
+        public ObservableCollection<ActivationMode> ProActivationModeItemsSource { get; set; }
+            = new ObservableCollection<ActivationMode>
+            { ActivationMode.ADS, ActivationMode.ADSPlusFire, ActivationMode.Fire,
+              ActivationMode.Always, ActivationMode.Hipfire, ActivationMode.Toggle,
+              ActivationMode.Hold, ActivationMode.DoubleTap, ActivationMode.Timed };
+        private ActivationMode _actMode = ActivationMode.ADSPlusFire;
+        public ActivationMode ProActivationModeSelectedItem { get => _actMode; set => Set(ref _actMode, value); }
+        private double _timedMs = 3000.0;
+        public double ProTimedDurationMs { get => _timedMs; set => Set(ref _timedMs, value); }
+
+        // ── Display ───────────────────────────────────────────────────────────
+        public ObservableCollection<string> ResolutionItemsSource { get; set; }
+            = new ObservableCollection<string>
+            { "1920x1080 (FHD)", "2560x1440 (QHD)", "3840x2160 (4K)",
+              "2560x1080 (UW-FHD)", "3440x1440 (UW-QHD)" };
+        private string _res = "1920x1080 (FHD)";
+        public string ResolutionSelectedItem { get => _res; set => Set(ref _res, value); }
+
+        public ObservableCollection<string> RefreshRateItemsSource { get; set; }
+            = new ObservableCollection<string>
+            { "60 Hz", "120 Hz", "144 Hz", "165 Hz", "240 Hz" };
+        private string _hz = "60 Hz";
+        public string RefreshRateSelectedItem { get => _hz; set => Set(ref _hz, value); }
+
+        private string _cfgPath = "";
+        public string GameConfigFilePath { get => _cfgPath; set => Set(ref _cfgPath, value); }
+
+        private int _appW = 2560; public int AppliedResolutionWidth { get => _appW; set => Set(ref _appW, value); }
+        private int _appH = 1440; public int AppliedResolutionHeight { get => _appH; set => Set(ref _appH, value); }
+        private int _appHz = 165; public int AppliedRefreshRate { get => _appHz; set => Set(ref _appHz, value); }
+
+        // ── Plugin license key (entered in System Panel) ──────────────────────
+        private string _pluginLicKey = "";
+        public string PluginLicenseKey
+        {
+            get => _pluginLicKey;
+            set
+            {
+                if (_pluginLicKey == value) return;
+                _pluginLicKey = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PluginLicenseKey)));
             }
         }
     }
